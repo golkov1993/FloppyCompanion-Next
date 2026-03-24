@@ -14,6 +14,9 @@ Thanks to everyone who contributed translations for FloppyCompanion's web UI.
   - @NotZezu
   - @MematiBas42
 
+- **Tiếng Việt (vi)**
+  - @ThePrimalPea
+
 - **Українська (uk)**
   - @NiFate
 
