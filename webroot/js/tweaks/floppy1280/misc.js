@@ -98,6 +98,7 @@ function updateGpuUnlockCopy() {
     const key = window.KERNEL_NAME === 'Floppy2100'
         ? 'tweaks.tooltip.gpuUnlock2100'
         : 'tweaks.tooltip.gpuUnlock';
+    gpuUnlockBubble.setAttribute('data-i18n', key);
     gpuUnlockBubble.textContent = translateTextOrFallback(key, 'Enables GPU unlock immediately.');
 }
 
