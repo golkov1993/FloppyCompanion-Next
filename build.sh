@@ -39,9 +39,19 @@ echo "Latest tag: $TAG"
 MAGISK_APK="Magisk-${TAG}.apk"
 MAGISK_URL="https://github.com/topjohnwu/Magisk/releases/download/${TAG}/${MAGISK_APK}"
 TOOLS_DIR="$MODULE_DIR/tools"
+FKFEAT_DIR="$TOOLS_DIR/fkfeat"
 
 # Prepare tools directory
 mkdir -p "$TOOLS_DIR"
+
+if [ ! -d "$FKFEAT_DIR" ]; then
+    echo "Missing fkfeat sources at $FKFEAT_DIR" >&2
+    exit 1
+fi
+
+echo "Building fkfeat..."
+make -C "$FKFEAT_DIR" clean
+make -C "$FKFEAT_DIR" CC=aarch64-linux-gnu-gcc
 
 if [ -f "../$MAGISK_APK" ]; then
     rm "../$MAGISK_APK"
@@ -80,6 +90,7 @@ cp -r tweaks "$TEMP_DIR/"
 cp -r webroot "$TEMP_DIR/"
 if [ -d tools ] && [ -n "$(ls -A tools 2>/dev/null)" ]; then
     cp -r tools "$TEMP_DIR/"
+    rm -rf "$TEMP_DIR/tools/fkfeat"
 fi
 
 # Create zip from temporary directory
