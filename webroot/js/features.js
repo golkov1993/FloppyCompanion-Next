@@ -12,6 +12,8 @@ let currentLiveReadMode = 'proc_cmdline'; // Current live feature read mode
 let currentPatchMode = 'kernel'; // Current patch mode (kernel/header)
 let currentDeviceFamily = null; // State for schema selection (set during init)
 let currentLiveFeatures = {}; // Live values from runtime sources like fkfeatctl
+let featuresLoaded = false; // Whether the current family has already rendered content
+let loadedDeviceFamily = null; // Device family for the currently rendered content
 
 // --- Backend Communication ---
 
@@ -63,14 +65,18 @@ function stopLogPolling() {
 
 // Set device type for schema selection (called from main.js)
 function setDeviceContext(familyKey) {
+    if (currentDeviceFamily !== familyKey) {
+        featuresLoaded = false;
+        loadedDeviceFamily = null;
+        currentSchema = null;
+        currentProcCmdline = null;
+    }
     currentDeviceFamily = familyKey || null;
 }
 
 // Helper to expose to UI
 window.loadFeaturesIfNeeded = function () {
-    const featuresContainer = document.getElementById('features-container');
-    // Refresh if empty or minimal content, but avoid loops
-    if (featuresContainer && featuresContainer.childElementCount <= 1) {
+    if (!featuresLoaded || loadedDeviceFamily !== currentDeviceFamily) {
         loadFeatures();
     }
 }
@@ -88,6 +94,7 @@ async function loadFeatures() {
     }
     pendingChanges = {};
     currentLiveFeatures = {};
+    featuresLoaded = false;
 
     try {
         // Load Feature Definitions
@@ -103,6 +110,8 @@ async function loadFeatures() {
                 ? unsupportedText
                 : 'No feature support is available for this device yet.';
             featuresContainer.innerHTML = `<p class="text-center p-4">${fallbackText}</p>`;
+            featuresLoaded = true;
+            loadedDeviceFamily = familyKey;
             return;
         }
 
@@ -127,6 +136,8 @@ async function loadFeatures() {
 
         if (!rawFeatures || !rawFeatures.includes('Unpack successful')) {
             featuresContainer.innerHTML = `<div class="p-4 text-center">Failed to unpack.<br><small>${rawFeatures || 'No output'}</small></div>`;
+            featuresLoaded = true;
+            loadedDeviceFamily = familyKey;
             return;
         }
 
@@ -138,6 +149,8 @@ async function loadFeatures() {
 
         if (!featureOutput.includes(startMarker)) {
             featuresContainer.innerHTML = `<div class="p-4 text-center">Failed to read features.<br><small>${featureOutput}</small></div>`;
+            featuresLoaded = true;
+            loadedDeviceFamily = familyKey;
             return;
         }
 
@@ -157,6 +170,8 @@ async function loadFeatures() {
 
             if (!liveOutput.includes(startMarker)) {
                 featuresContainer.innerHTML = `<div class="p-4 text-center">Failed to read live features.<br><small>${liveOutput}</small></div>`;
+                featuresLoaded = true;
+                loadedDeviceFamily = familyKey;
                 return;
             }
 
@@ -179,6 +194,8 @@ async function loadFeatures() {
         }
 
         renderFeatures(schema, procCmdline);
+        featuresLoaded = true;
+        loadedDeviceFamily = familyKey;
 
         // Visibility check for Read-Only Patch Toggle
         const readonlyContainer = document.getElementById('readonly-patch-container');
@@ -191,6 +208,8 @@ async function loadFeatures() {
 
     } catch (e) {
         featuresContainer.innerHTML = `<div class="p-4 text-center">Error: ${e.message}</div>`;
+        featuresLoaded = true;
+        loadedDeviceFamily = currentDeviceFamily;
     }
 }
 
