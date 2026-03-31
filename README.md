@@ -80,6 +80,7 @@ FloppyCompanion currently supports:
 - Spanish
 - Turkish
 - Ukrainian
+- Vietnamese
 - Arabic
 
 Translation guide: docs/TRANSLATION_GUIDE.md

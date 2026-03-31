@@ -101,7 +101,7 @@
             "minLabel": "Tối thiểu",
             "maxLabel": "Tối đa",
             "govLabel": "Governor",
-            "gpuUnlock": "Mở khoá GPU",
+            "gpuUnlock": "Ép xung GPU",
             "gpuClockLock": "Khoá Xung nhịp GPU",
             "adrenoboost": "Adrenoboost",
             "idlerActive": "Adreno Idler",
@@ -137,6 +137,10 @@
         "apply": "Áp dụng",
         "saveApply": "Lưu & Áp dụng",
         "unsaved": "Chưa được lưu",
+        "resetCard": "Khôi phục mặc định",
+        "resetTweakTitle": "Khôi phục mặc định",
+        "resetTweakDesc": "Thao tác này sẽ xóa cấu hình đã lưu cho \"{name}\" và tải lại cấu hình mặc định đã ghi của nó.",
+        "resetTweakWarning": "Những thay đổi chưa được lưu của bạn trên thẻ này sẽ được thay thế.",
         "zram": {
             "title": "ZRAM",
             "enable": "Bật ZRAM",
@@ -183,12 +187,12 @@
             "psiCompleteStall": "Ngừng Hoàn toàn PSI",
             "thrashingLimit": "Giới hạn Thrashing",
             "thrashingLimitDecay": "Suy giảm Giới hạn Thrashing",
-            "swapUtilMax": "Tối đa Tiẹn ích Swap",
+            "swapUtilMax": "Tối đa Tiện ích Swap",
             "swapFreeLowPercentage": "Swap Trống % Thấp",
             "enabled": "Đã bật",
             "disabled": "Đã tắt",
-            "requiresLegacyMinfree": "Yêy cầu memcg cũ (cgroup v1)",
-            "requiresVmpressureFallback": "Việc tắt này yêu cầu cơ chế dự phòng vmpressure. (cgroup v1)"
+            "requiresLegacyMinfree": "Yêu cầu memcg cũ (cgroup v1)",
+            "requiresVmpressureFallback": "Việc tắt này yêu cầu cơ chế dự phòng vmpressure (cgroup v1)"
         },
         "iosched": {
             "ioScheduler": "Bộ lập lịch I/O"
@@ -211,6 +215,7 @@
             "title": "Giảm điện áp",
             "little": "Cụm Nhỏ",
             "big": "Cụm Lớn",
+            "prime": "Cụm Chính",
             "gpu": "GPU",
             "unlockRange": "Mở khóa toàn bộ phạm vi",
             "notice": "Các cài đặt giảm điện áp đã bị xóa vì bạn đã bật hoặc thay đổi Chế độ Mở khóa. Điều này giúp ngăn ngừa sự cố do cấu hình giảm điện áp không tương thích.",
@@ -339,6 +344,7 @@
         "presetLoadFailed": "Thất bại khi tải thiết lập sẵn",
         "presetDefaultApplied": "Thiết lập sẵn mặc định đã được áp dụng",
         "presetDefaultLoaded": "Thiết lập sẵn mặc định đã được tải",
+        "tweakDefaultLoaded": "Mặc định đã được tải cho {name}",
         "presetSavedApplied": "Thiết lập sẵn đã được lưu & áp dụng",
         "presetLoadedSaved": "Thiết lập sẵn đã được tải & lưu",
         "presetExportBuiltIn": "Không thể xuất các thiết lập sẵn được tích hợp",
