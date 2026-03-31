@@ -193,14 +193,14 @@ async function loadSharedExynosState() {
     const defMisc = window.getDefaultTweakPreset('misc');
     const defExynos = window.getDefaultTweakPreset('exynos');
     const defaultState = { ...defMisc, ...defExynos };
+    miscSavedState = window.buildSparseStateAgainstDefaults(saved, defaultState);
 
-    miscPendingState = window.initPendingState(miscCurrentState, miscSavedState, defaultState);
-
-    const { reference } = window.resolveTweakReference(miscCurrentState, miscSavedState, defaultState);
+    const effectiveReferenceState = window.initPendingState(miscCurrentState, miscSavedState, defaultState);
+    miscPendingState = { ...effectiveReferenceState };
     miscReferenceState = {
-        block_ed3: reference.block_ed3 || '0',
-        gpu_clklck: reference.gpu_clklck || '0',
-        gpu_unlock: reference.gpu_unlock || '0'
+        block_ed3: effectiveReferenceState.block_ed3 || '0',
+        gpu_clklck: effectiveReferenceState.gpu_clklck || '0',
+        gpu_unlock: effectiveReferenceState.gpu_unlock || '0'
     };
 
     exynosStateInitialized = true;

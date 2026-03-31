@@ -28,16 +28,16 @@ async function loadZramState() {
         zramSavedState = window.buildSparseStateAgainstDefaults(saved, zramDefaultState);
 
         // Initialize pending state from saved if available, else from current, else from defaults
-        zramPendingState = window.initPendingState(zramCurrentState, zramSavedState, zramDefaultState);
+        const effectiveReferenceState = window.initPendingState(zramCurrentState, zramSavedState, zramDefaultState);
+        zramPendingState = { ...effectiveReferenceState };
         if (zramPendingState.enabled === undefined) zramPendingState.enabled = '1';
         if (!zramPendingState.algorithm) zramPendingState.algorithm = 'lz4';
         if (!zramPendingState.disksize) zramPendingState.disksize = '0';
 
-        const { reference } = window.resolveTweakReference(zramCurrentState, zramSavedState, zramDefaultState);
         zramReferenceState = {
-            disksize: reference.disksize || '0',
-            algorithm: reference.algorithm || 'lz4',
-            enabled: reference.enabled !== undefined ? reference.enabled : '1'
+            disksize: effectiveReferenceState.disksize || '0',
+            algorithm: effectiveReferenceState.algorithm || 'lz4',
+            enabled: effectiveReferenceState.enabled !== undefined ? effectiveReferenceState.enabled : '1'
         };
 
         renderZramCard();

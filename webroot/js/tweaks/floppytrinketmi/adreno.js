@@ -152,16 +152,15 @@ async function loadAdrenoState() {
 
     adrenoDefaultState = { ...window.getDefaultTweakPreset('adreno') };
     adrenoSavedState = window.buildSparseStateAgainstDefaults(saved, adrenoDefaultState);
+    const effectiveReferenceState = window.initPendingState(adrenoCurrentState, adrenoSavedState, adrenoDefaultState);
 
-    adrenoPendingState = window.initPendingState(adrenoCurrentState, adrenoSavedState, adrenoDefaultState);
-
-    const { reference } = window.resolveTweakReference(adrenoCurrentState, adrenoSavedState, adrenoDefaultState);
+    adrenoPendingState = { ...effectiveReferenceState };
     adrenoReferenceState = {
-        adrenoboost: reference.adrenoboost || '0',
-        idler_active: reference.idler_active || 'N',
-        idler_downdifferential: reference.idler_downdifferential || '20',
-        idler_idlewait: reference.idler_idlewait || '15',
-        idler_idleworkload: reference.idler_idleworkload || '5000'
+        adrenoboost: effectiveReferenceState.adrenoboost || '0',
+        idler_active: effectiveReferenceState.idler_active || 'N',
+        idler_downdifferential: effectiveReferenceState.idler_downdifferential || '20',
+        idler_idlewait: effectiveReferenceState.idler_idlewait || '15',
+        idler_idleworkload: effectiveReferenceState.idler_idleworkload || '5000'
     };
     renderAdrenoCard();
 }

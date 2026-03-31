@@ -40,14 +40,14 @@ async function loadThermalState() {
         thermalSavedState = window.buildSparseStateAgainstDefaults(saved, thermalDefaultState);
 
         // Initialize pending state
-        thermalPendingState = window.initPendingState(thermalCurrentState, thermalSavedState, thermalDefaultState);
+        const effectiveReferenceState = window.initPendingState(thermalCurrentState, thermalSavedState, thermalDefaultState);
+        thermalPendingState = { ...effectiveReferenceState };
         if (!thermalPendingState.mode) thermalPendingState.mode = '1';
         if (thermalPendingState.custom_freq === undefined) thermalPendingState.custom_freq = '';
 
-        const { reference } = window.resolveTweakReference(thermalCurrentState, thermalSavedState, thermalDefaultState);
         thermalReferenceState = {
-            mode: reference.mode || '1',
-            custom_freq: reference.custom_freq || ''
+            mode: effectiveReferenceState.mode || '1',
+            custom_freq: effectiveReferenceState.custom_freq || ''
         };
 
         // Show thermal card

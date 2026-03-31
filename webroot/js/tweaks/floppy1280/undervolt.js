@@ -79,12 +79,13 @@ async function loadUndervoltState() {
     undervoltCurrentState = normalizeUndervoltState(current);
     undervoltDefaultState = normalizeUndervoltState(window.getDefaultTweakPreset('undervolt') || {});
     undervoltSavedState = window.buildSparseStateAgainstDefaults(saved, undervoltDefaultState);
-    undervoltPendingState = normalizeUndervoltState(
-        window.initPendingState(undervoltCurrentState, undervoltSavedState, undervoltDefaultState)
+    const effectiveReferenceState = window.initPendingState(
+        undervoltCurrentState,
+        undervoltSavedState,
+        undervoltDefaultState
     );
-
-    const { reference } = window.resolveTweakReference(undervoltCurrentState, undervoltSavedState, undervoltDefaultState);
-    undervoltReferenceState = normalizeUndervoltState(reference);
+    undervoltPendingState = normalizeUndervoltState(effectiveReferenceState);
+    undervoltReferenceState = normalizeUndervoltState(effectiveReferenceState);
 
     ensureUndervoltUnlockedIfNeeded();
     renderUndervoltCard();
@@ -200,8 +201,25 @@ function updateSliderTicks(slider, isUnlocked) {
 }
 
 function updateUndervoltPendingIndicator() {
-    const reference = undervoltReferenceState || UNDERVOLT_BASE_STATE;
-    const isChanged = getSupportedUndervoltKeys().some((key) => undervoltPendingState[key] !== reference[key]);
+    const isChanged = getSupportedUndervoltKeys().some((key) => {
+        const pendingValue = window.getTweakPendingValue(
+            key,
+            undervoltPendingState,
+            undervoltReferenceState,
+            undervoltDefaultState,
+            undervoltCurrentState,
+            '0'
+        );
+        const referenceValue = window.getTweakReferenceValue(
+            key,
+            undervoltReferenceState,
+            undervoltDefaultState,
+            undervoltCurrentState,
+            '0'
+        );
+
+        return pendingValue !== referenceValue;
+    });
 
     window.setPendingIndicator('undervolt-pending-indicator', isChanged);
 }
