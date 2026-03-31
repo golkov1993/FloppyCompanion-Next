@@ -95,11 +95,15 @@ function updateGpuUnlockCopy() {
     const gpuUnlockBubble = document.getElementById('bubble-misc-gpuunlock');
     if (!gpuUnlockBubble) return;
 
-    const key = window.KERNEL_NAME === 'Floppy2100'
-        ? 'tweaks.tooltip.gpuUnlock2100'
-        : 'tweaks.tooltip.gpuUnlock';
+    const is2100 = window.KERNEL_NAME === 'Floppy2100';
+    const key = is2100 ? 'tweaks.tooltip.gpuUnlock2100' : 'tweaks.tooltip.gpuUnlock';
     gpuUnlockBubble.setAttribute('data-i18n', key);
-    gpuUnlockBubble.textContent = translateTextOrFallback(key, 'Enables GPU unlock immediately.');
+    gpuUnlockBubble.textContent = translateTextOrFallback(
+        key,
+        is2100
+            ? 'Enables GPU overclocking immediately. On Floppy2100, this overclocks the GPU to 949 MHz and can be toggled at any time with immediate effect.'
+            : 'Enables GPU overclocking immediately.'
+    );
 }
 
 function renderSharedValues() {
