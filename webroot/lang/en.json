@@ -236,13 +236,6 @@
         "exynos": {
             "title": "Exynos Tweaks"
         },
-        "miscFeatures": {
-            "title": "Misc Features",
-            "blockCpuset": "Block Cpusets",
-            "blockSchedSetAffinity": "Block scheduler set affinity",
-            "enabled": "Enabled",
-            "disabled": "Disabled"
-        },
         "miscTrinket": {
             "title": "Misc FloppyTrinket Tweaks",
             "touchboost": "MSM Performance Touchboost",
@@ -311,8 +304,6 @@
             "throttlersProtection": "When enabled, userspace (the ROM's services and processes) is blocked from throttling the CPU and GPU, so that only kernel-level throttling happens.",
             "gpuUnlock": "Enables GPU overclocking immediately. Only works in Superfloppy overclock modes (1, 2, 3). Greyed out if Unlocked Mode is disabled or in non-OC modes.",
             "gpuUnlock2100": "Enables GPU overclocking immediately. On Floppy2100, this overclocks the GPU to 949 MHz and can be toggled at any time with immediate effect.",
-            "blockCpuset": "Blocks userspace from changing cpusets.",
-            "blockSchedSetAffinity": "Blocks usage of the kernel function sched_setaffinity().",
             "soundcontrol": "Adjust headphone and microphone gain in decibels. Higher values increase volume. Use Split L/R to control left and right channels independently.",
             "charging": "Configure advanced charging behavior.",
             "chargingBypass": "Stops battery charging while allowing device to run from USB power. Useful for gaming to reduce heat.",

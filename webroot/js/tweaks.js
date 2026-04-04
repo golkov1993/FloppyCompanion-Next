@@ -104,7 +104,6 @@ window.reloadTweakState = async function (tweakId) {
         undervolt: window.loadUndervoltState,
         misc: window.loadMiscState,
         exynos: window.loadExynosState,
-        misc_features: window.loadMiscFeaturesState,
         soundcontrol: window.loadSoundControlState,
         charging: window.loadChargingState,
         display: window.loadDisplayState,
@@ -138,7 +137,6 @@ window.clearTweakPersistence = async function (tweakId) {
         iosched: 'iosched.conf',
         thermal: 'thermal.conf',
         undervolt: 'undervolt.conf',
-        misc_features: 'misc_features.conf',
         soundcontrol: 'soundcontrol.conf',
         charging: 'charging.conf',
         display: 'display.conf',
@@ -669,7 +667,6 @@ function initPlatformTweaks() {
         if (typeof initUndervoltTweak === 'function') initUndervoltTweak();
         if (typeof initMiscTweak === 'function') initMiscTweak();
         if (typeof initExynosTweak === 'function') initExynosTweak();
-        if (typeof initMiscFeaturesTweak === 'function') initMiscFeaturesTweak();
         if (typeof initChargingTweak === 'function') initChargingTweak();
         if (typeof initDisplayTweak === 'function') initDisplayTweak();
         if (typeof initSoundControlTweak === 'function') initSoundControlTweak();

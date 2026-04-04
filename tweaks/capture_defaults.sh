@@ -235,29 +235,6 @@ EOF_EXYNOS
     }
 EOF_TRINKET
     fi
-)$(
-    if [ "$IS_2100" = "1" ]; then
-      cat << EOF_MISC_FEATURES
-,
-    "misc_features": {
-$(      first=1
-      append_misc_feature_entry() {
-        key="$1"
-        node="$2"
-        [ -f "$node" ] || return
-        val=$(cat "$node" 2>/dev/null || echo 0)
-        if [ "$first" -eq 0 ]; then
-          printf ',\n'
-        fi
-        printf '      "%s": "%s"' "$key" "$val"
-        first=0
-      }
-      append_misc_feature_entry "block_cpuset" "/sys/kernel/block_cpuset"
-      append_misc_feature_entry "block_sched_setaffinity" "/sys/kernel/block_sched_setaffinity"
-)
-    }
-EOF_MISC_FEATURES
-    fi
 )
   }
 }

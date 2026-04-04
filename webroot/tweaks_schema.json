@@ -77,20 +77,6 @@
           }
         },
         {
-          "id": "misc_features",
-          "cardId": "misc-features-card",
-          "pendingId": "misc_features-pending-indicator",
-          "type": "custom",
-          "templateId": "tpl-misc-features",
-          "iconKey": "misc",
-          "titleKey": "tweaks.miscFeatures.title",
-          "tooltipKey": null,
-          "requires": {
-            "var": "kernelName",
-            "eq": "Floppy2100"
-          }
-        },
-        {
           "id": "soundcontrol",
           "cardId": "soundcontrol-card",
           "pendingId": "soundcontrol-pending-indicator",

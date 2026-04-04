@@ -148,11 +148,6 @@ if [ -f "$MODDIR/tweaks/misc.sh" ]; then
     sh "$MODDIR/tweaks/misc.sh" apply_saved
 fi
 
-# Misc runtime features
-if [ -f "$MODDIR/tweaks/misc_features.sh" ]; then
-    sh "$MODDIR/tweaks/misc_features.sh" apply_saved
-fi
-
 # Sound Control (FloppyTrinketMi only)
 if [ -f "$MODDIR/tweaks/soundcontrol.sh" ]; then
     sh "$MODDIR/tweaks/soundcontrol.sh" apply_saved

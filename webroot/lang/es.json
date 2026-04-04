@@ -275,13 +275,6 @@
         "exynos": {
             "title": "Tweaks Exynos"
         },
-        "miscFeatures": {
-            "title": "Funciones varias",
-            "blockCpuset": "Bloquear cpusets",
-            "blockSchedSetAffinity": "Bloquear scheduler set affinity",
-            "enabled": "Habilitado",
-            "disabled": "Deshabilitado"
-        },
         "miscTrinket": {
             "title": "Tweaks Misc FloppyTrinket",
             "touchboost": "MSM Performance Touchboost",
@@ -315,8 +308,6 @@
             "throttlersProtection": "Cuando está habilitado, userspace (los servicios y procesos de la ROM) no puede hacer throttling de la CPU y la GPU, de modo que solo ocurre throttling a nivel del kernel.",
             "gpuUnlock": "Habilita el overclocking de la GPU inmediatamente. Solo funciona en modos de Superfloppy con overclock (1, 2, 3). Deshabilitado si el Modo Unlocked está desactivado o en modos no-OC.",
             "gpuUnlock2100": "Habilita el overclocking de la GPU inmediatamente. En Floppy2100, esto overclockea la GPU hasta 949 MHz y se puede activar o desactivar en cualquier momento con efecto inmediato.",
-            "blockCpuset": "Bloquea que userspace cambie los cpusets.",
-            "blockSchedSetAffinity": "Bloquea el uso de la función del kernel sched_setaffinity().",
             "soundcontrol": "Ajusta la ganancia de auriculares y micrófono en decibelios. Valores más altos aumentan el volumen. Usa Separar L/R para controlar los canales izquierdo y derecho de forma independiente.",
             "adreno": "Ajustes específicos para GPUs Adreno.",
             "adrenoboost": "Un algoritmo de impulso de reemplazo para GPUs Adreno que reemplaza el predeterminado.",

@@ -76,7 +76,6 @@ async function reloadAllTweakStates() {
         'thermal',
         'undervolt',
         'misc',
-        'misc_features',
         'soundcontrol',
         'charging',
         'display',
