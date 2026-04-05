@@ -1275,29 +1275,6 @@ body {
     gap: 12px;
 }
 
-.styled-slider:not(.beer-slider-input) {
-    flex-grow: 1;
-    -webkit-appearance: none;
-    appearance: none;
-    height: 20px;
-    /* Match thumb height for proper hit area */
-    min-width: 0;
-    width: auto;
-    background: transparent;
-    /* Track is drawn via runnable-track */
-    outline: none;
-    margin: 0;
-    padding: 0;
-    touch-action: none;
-}
-
-.styled-slider:not(.beer-slider-input)::-webkit-slider-runnable-track {
-    width: 100%;
-    height: 4px;
-    background: var(--md-sys-color-surface-variant);
-    border-radius: 2px;
-}
-
 .tweak-row {
     padding-inline-start: 0 !important;
     padding-inline-end: 0 !important;
@@ -1308,44 +1285,6 @@ body {
     padding-bottom: 10px;
     /* Space between content and separator line */
     margin-bottom: 2px;
-}
-
-.styled-slider:not(.beer-slider-input)::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    background: var(--md-sys-color-primary);
-    cursor: pointer;
-    border: none;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
-    transition: transform 0.1s;
-    margin-top: -8px;
-    /* Center thumb: (4px track - 20px thumb) / 2 */
-}
-
-.styled-slider:not(.beer-slider-input)::-webkit-slider-thumb:active {
-    transform: scale(1.2);
-}
-
-/* Visual Ticks Logic */
-/* Ticks are generated via JS (SVG Data URI) and set to --track-ticks variable */
-.styled-slider:not(.beer-slider-input)::-webkit-slider-runnable-track {
-    background:
-        var(--track-ticks, none),
-        /* SVG Ticks */
-        linear-gradient(var(--md-sys-color-surface-variant), var(--md-sys-color-surface-variant));
-    /* Solid track */
-
-    background-size:
-        calc(100% - 20px) 100%,
-        /* Ticks constrain to thumb travel */
-        100% 100%;
-    /* Track matches full input width */
-
-    background-position: center, center;
-    background-repeat: no-repeat;
-    border-radius: 2px;
 }
 
 /* Hybrid BeerCSS slider styling for stepped tweak ranges */
@@ -1816,17 +1755,6 @@ beer-css.tweak-slider-scope .tweak-beer-slider:has(> input.beer-slider-input:dis
     pointer-events: none;
     opacity: 0.95;
     z-index: 2;
-}
-
-/* Slider drag-only (no tap-to-jump) */
-.styled-slider {
-    pointer-events: none;
-    /* Disable track clicks */
-}
-
-.styled-slider::-webkit-slider-thumb {
-    pointer-events: auto;
-    /* Enable thumb dragging */
 }
 
 .current-values {
