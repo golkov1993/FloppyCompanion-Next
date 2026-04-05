@@ -871,6 +871,28 @@ body {
     gap: 10px;
 }
 
+.preset-selector-field {
+    --_input: 2.6rem;
+    --_background: var(--surface-container-high);
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+.preset-selector-field::after {
+    content: "";
+    position: absolute;
+    inset-inline-end: 15px;
+    top: 50%;
+    width: 7px;
+    height: 7px;
+    border-inline-end: 2px solid var(--md-sys-color-on-surface);
+    border-block-end: 2px solid var(--md-sys-color-on-surface);
+    transform: translateY(-65%) rotate(45deg);
+    pointer-events: none;
+    opacity: 0.8;
+    z-index: 2;
+}
+
 .preset-label {
     font-size: 14px;
     font-weight: 500;
@@ -880,27 +902,16 @@ body {
 }
 
 .preset-selector {
-    flex: 1;
-    padding: 10px 14px;
-    background-color: var(--md-sys-color-surface);
+    width: 100%;
+    min-width: 0;
     color: var(--md-sys-color-on-surface);
-    border: 1px solid var(--md-sys-color-outline);
-    border-radius: 20px;
-    font-size: 14px;
+    font-size: 15px;
     font-weight: 500;
     cursor: pointer;
-    appearance: none;
-    -webkit-appearance: none;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='%23747775'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right 8px center; /* Background position keyword 'right' might need handling or is fine if icon always on right */
-    padding-inline-end: 32px;
-    outline: none;
 }
 
-.preset-selector:focus {
-    border-color: var(--md-sys-color-primary);
-    box-shadow: 0 0 0 2px rgba(var(--md-sys-color-primary-rgb, 13, 71, 161), 0.2);
+.preset-selector-field>.preset-selector {
+    padding-inline-end: 2.75rem;
 }
 
 .preset-actions {
@@ -944,20 +955,22 @@ body {
     margin-inline-end: 0;
 }
 
-.preset-name-input {
-    width: 100%;
-    padding: 14px 16px;
-    background-color: var(--md-sys-color-surface-container-high);
-    color: var(--md-sys-color-on-surface);
-    border: 1px solid var(--md-sys-color-outline);
-    border-radius: var(--md-sys-shape-corner-medium);
-    font-size: 16px;
-    outline: none;
+.preset-name-field {
+    --_input: 2.85rem;
+    --_background: var(--surface-container-high);
+    margin-top: 8px;
 }
 
-.preset-name-input:focus {
-    border-color: var(--md-sys-color-primary);
-    border-width: 2px;
+.preset-name-input {
+    width: 100%;
+    min-width: 0;
+    color: var(--md-sys-color-on-surface);
+    font-size: 16px;
+}
+
+.preset-name-input::placeholder {
+    color: var(--md-sys-color-on-surface-variant);
+    opacity: 0.6;
 }
 
 /* --- Tweaks Section Styles --- */
@@ -1199,32 +1212,206 @@ body {
     display: inline-block;
 }
 
+.compact-field {
+    --_input: 2.125rem;
+    --_background: var(--surface-container);
+}
+
+.compact-field.field[class*=round] {
+    border-radius: 1rem;
+}
+
+/* Scoped BeerCSS compatibility for controls where `.beer` and `.field` share the same node. */
+.beer.field {
+    --_input: 3rem;
+    --_background: var(--surface-variant);
+    position: relative;
+    min-block-size: var(--_input);
+    display: flex;
+    flex-direction: column;
+    border-radius: 0.25rem 0.25rem 0 0;
+}
+
+.beer.field.small {
+    --_input: 2.5rem;
+}
+
+.beer.field.large {
+    --_input: 3.5rem;
+}
+
+.beer.field.extra {
+    --_input: 4rem;
+}
+
+.beer.field.fill {
+    background-color: unset !important;
+    color: unset !important;
+}
+
+.beer.field.border {
+    border-radius: 0.25rem;
+}
+
+.beer.field[class*=round].small {
+    border-radius: 1.25rem;
+}
+
+.beer.field[class*=round] {
+    border-radius: 1.5rem;
+}
+
+.beer.field[class*=round].large {
+    border-radius: 1.75rem;
+}
+
+.beer.field[class*=round].extra {
+    border-radius: 2rem;
+}
+
+.beer.field> :is(input, textarea, select) {
+    all: unset;
+    position: relative;
+    display: flex;
+    align-items: center;
+    box-sizing: border-box;
+    width: 100%;
+    min-width: 0;
+    min-block-size: var(--_input);
+    padding: 0 0.9375rem;
+    border: 0.0625rem solid transparent;
+    border-radius: inherit;
+    font-family: inherit;
+    font-size: 1rem;
+    color: var(--on-surface);
+    background: none;
+    outline: none;
+    resize: none;
+    z-index: 1;
+}
+
+.beer.field.fill> :is(input, textarea, select) {
+    background-color: var(--_background);
+}
+
+.beer.field> :is(input, textarea, select):focus {
+    border: 0.125rem solid transparent;
+    padding-inline: 0.875rem;
+}
+
+.beer.field.border> :is(input, textarea, select) {
+    border-color: var(--outline-variant);
+}
+
+.beer.field.border> :is(input, textarea, select):focus {
+    border-color: var(--primary);
+}
+
+.beer.field[class*=round]> :is(input, textarea, select) {
+    padding-inline: 1.4375rem;
+}
+
+.beer.field[class*=round]> :is(input, textarea, select):focus {
+    padding-inline: 1.375rem;
+}
+
+.beer.field.suffix> :is(input, textarea, select) {
+    padding-inline-end: 2.9375rem;
+}
+
+.beer.field.suffix> :is(input, textarea, select):focus {
+    padding-inline-end: 2.875rem;
+}
+
+.beer.field>select {
+    cursor: pointer;
+    user-select: none;
+    appearance: none;
+    -webkit-appearance: none;
+}
+
+.beer.field>select>option {
+    background-color: var(--surface);
+    color: var(--on-surface);
+}
+
+.beer.field.compact-field {
+    --_input: 2.125rem;
+    --_background: var(--surface-container);
+}
+
+.beer.field.compact-field[class*=round] {
+    border-radius: 1rem;
+}
+
+.beer.field.compact-field> :is(input, textarea, select) {
+    font-size: 0.875rem;
+    font-variant-numeric: tabular-nums;
+}
+
+.beer.field.compact-field:not(.suffix)>input {
+    display: block;
+    padding-inline: 0;
+    text-align: center;
+    line-height: calc(var(--_input) - 0.125rem);
+    font-variant-numeric: tabular-nums;
+}
+
+.beer.field.compact-field:not(.suffix)>input:focus {
+    padding-inline: 0;
+}
+
+.beer.field.compact-field.suffix> :is(input, textarea, select) {
+    padding-inline-end: 2.375rem;
+}
+
+.beer.field.compact-field.suffix> :is(input, textarea, select):focus {
+    padding-inline-end: 2.3125rem;
+}
+
+.custom-input-row.beer.field.compact-field.suffix>input {
+    display: block;
+    padding-inline-start: 0.375rem;
+    padding-inline-end: 1.4rem;
+    text-align: center;
+    line-height: normal;
+}
+
+.custom-input-row.beer.field.compact-field.suffix>input:focus {
+    padding-inline-start: 0.3125rem;
+    padding-inline-end: 1.3375rem;
+}
+
+.tweak-input-container.beer.field.compact-field {
+    flex: 0 0 4.35rem;
+    inline-size: 4.35rem;
+    max-inline-size: 4.35rem;
+}
+
+.custom-input-row.beer.field.compact-field {
+    flex: 0 0 4.2rem;
+    inline-size: 4.2rem;
+    max-inline-size: 4.2rem;
+}
+
 /* Custom Input Row (existing) */
 .custom-input-row {
     position: relative;
     display: inline-flex;
-    align-items: center;
+    flex-direction: column;
+    align-items: stretch;
     margin-top: 12px;
     flex-shrink: 0;
 }
 
 .custom-input-row input {
     flex: 0 0 auto;
-    width: 65px;
-    padding: 8px 22px 8px 8px;
-    /* Extra right padding for suffix overlay */
-    border: 1px solid var(--md-sys-color-outline);
-    border-radius: var(--md-sys-shape-corner-medium);
-    background-color: var(--md-sys-color-surface-container-high);
+    width: 100%;
+    min-width: 0;
     color: var(--md-sys-color-on-surface);
-    font-size: 14px;
+    font-size: 13px;
     outline: none;
     text-align: center;
-}
-
-.custom-input-row input:focus {
-    border-color: var(--md-sys-color-primary);
-    border-width: 2px;
 }
 
 .custom-input-row input::placeholder {
@@ -1234,12 +1421,15 @@ body {
 
 .custom-input-row .input-suffix {
     position: absolute;
-    right: 8px;
+    right: 9px;
     top: 50%;
     transform: translateY(-50%);
-    font-size: 14px;
+    font-size: 12px;
+    font-weight: 700;
     color: var(--md-sys-color-on-surface-variant);
     pointer-events: none;
+    opacity: 0.95;
+    z-index: 2;
 }
 
 /* Slider drag-only (no tap-to-jump) */
@@ -2543,23 +2733,17 @@ body {
 }
 
 .styled-input {
-    width: 90px;
-    padding: 8px 12px;
-    border: 1px solid var(--md-sys-color-outline);
-    border-radius: 8px;
-    background-color: var(--md-sys-color-surface);
+    width: 100%;
+    min-width: 0;
     color: var(--md-sys-color-on-surface);
-    font-size: 14px;
+    font-size: 13px;
     text-align: center;
     outline: none;
-    transition: all 0.2s;
 }
 
-.styled-input:focus {
-    border-color: var(--md-sys-color-primary);
-    border-width: 2px;
-    padding: 7px 11px;
-    /* Compensate for border width */
+.styled-input::placeholder {
+    color: var(--md-sys-color-on-surface-variant);
+    opacity: 0.6;
 }
 
 .tweak-section-header {

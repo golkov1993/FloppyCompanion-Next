@@ -427,7 +427,9 @@ async function promptPresetName() {
     const result = await showConfirmModal({
         title: title,
         body: `<p>${bodyText}</p>
-               <input type="text" id="save-preset-name-input" class="preset-name-input" placeholder="My Preset" maxlength="32" style="margin-top: 8px;">`,
+               <div class="beer field fill border round preset-name-field">
+                   <input type="text" id="save-preset-name-input" class="preset-name-input" placeholder="My Preset" maxlength="32">
+               </div>`,
         iconName: 'save',
         confirmText: confirmText,
         cancelText: cancelText
