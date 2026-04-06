@@ -80,6 +80,20 @@ prune_beercss_vendor() {
         -exec rm -f {} +
 }
 
+prune_simulator_assets() {
+    local webroot_dir="$1"
+
+    [ -d "$webroot_dir" ] || return 0
+
+    echo "Removing simulator-only assets from package payload..."
+    rm -f "$webroot_dir/simulator.html"
+    rm -f "$webroot_dir/js/simulator_bridge.js"
+
+    if [ -f "$webroot_dir/index.html" ]; then
+        sed -i '/simulator_bridge\.js/d' "$webroot_dir/index.html"
+    fi
+}
+
 # Prepare tools directory
 mkdir -p "$TOOLS_DIR"
 
@@ -128,6 +142,7 @@ cp features_backend.sh "$TEMP_DIR/"
 cp -r tweaks "$TEMP_DIR/"
 cp -r webroot "$TEMP_DIR/"
 prune_beercss_vendor "$TEMP_DIR/webroot"
+prune_simulator_assets "$TEMP_DIR/webroot"
 mkdir -p "$TEMP_DIR/tools"
 cp "$TOOLS_DIR/magiskboot" "$TEMP_DIR/tools/"
 
