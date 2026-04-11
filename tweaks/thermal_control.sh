@@ -68,13 +68,36 @@ read_offset_node_c() {
 }
 
 read_defaults_value() {
-    local key="$1"
+    local section="$1"
+    local key="$2"
 
     if [ ! -f "$DEFAULTS_FILE" ]; then
         return 1
     fi
 
-    sed -n "s/.*\"${key}\": \"\\([^\"]*\\)\".*/\\1/p" "$DEFAULTS_FILE" 2>/dev/null | head -n 1
+    awk -v section="$section" -v key="$key" '
+        BEGIN {
+            in_section = 0
+        }
+        $0 ~ "^[[:space:]]*\"" section "\": \\{" {
+            in_section = 1
+            next
+        }
+        in_section && $0 ~ "^[[:space:]]*}" {
+            in_section = 0
+            next
+        }
+        in_section {
+            pattern = "^[[:space:]]*\"" key "\": \""
+            if ($0 ~ pattern) {
+                line = $0
+                sub(pattern, "", line)
+                sub(/".*$/, "", line)
+                print line
+                exit
+            }
+        }
+    ' "$DEFAULTS_FILE" 2>/dev/null
 }
 
 resolve_default_setting_c() {
@@ -83,7 +106,7 @@ resolve_default_setting_c() {
     local fallback_mc="$3"
     local value
 
-    value=$(read_defaults_value "$key")
+    value=$(read_defaults_value "thermal_control" "$key")
     if [ -n "$value" ]; then
         sanitize_int "$value" "$((fallback_mc / 1000))"
         return 0
