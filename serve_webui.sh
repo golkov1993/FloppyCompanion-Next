@@ -1,4 +1,6 @@
 #!/usr/bin/env sh
+# Copyright (c) 2026 Flopster101
+# SPDX-License-Identifier: GPL-3.0
 set -eu
 
 PORT="${1:-38765}"

@@ -1,4 +1,6 @@
 #!/system/bin/sh
+# Copyright (c) 2026 Flopster101
+# SPDX-License-Identifier: GPL-3.0
 
 MODDIR="${0%/*}"
 TOOLS="$MODDIR/tools"

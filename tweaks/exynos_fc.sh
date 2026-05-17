@@ -1,4 +1,6 @@
 #!/system/bin/sh
+# Copyright (c) 2026 Flopster101
+# SPDX-License-Identifier: GPL-3.0
 
 DATA_DIR="/data/adb/floppy_companion"
 CONFIG_FILE="$DATA_DIR/config/exynos_fc.conf"

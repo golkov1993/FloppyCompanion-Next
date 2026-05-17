@@ -1,5 +1,7 @@
 #!/system/bin/sh
 # FloppyCompanion Installation Script
+# Copyright (c) 2026 Flopster101
+# SPDX-License-Identifier: GPL-3.0
 
 ui_print "========================================"
 ui_print "       FloppyCompanion Installer"

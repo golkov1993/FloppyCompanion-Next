@@ -1,4 +1,6 @@
 #!/system/bin/sh
+# Copyright (c) 2026 Flopster101
+# SPDX-License-Identifier: GPL-3.0
 # I/O Scheduler Tweak Backend Script
 
 MODDIR="${0%/*}/.."

@@ -1,4 +1,6 @@
 #!/system/bin/sh
+# Copyright (c) 2026 Flopster101
+# SPDX-License-Identifier: GPL-3.0
 # Predefined tweak defaults that should not be captured from live runtime state.
 
 apply_predefined_tweak_defaults() {

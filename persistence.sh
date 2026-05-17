@@ -1,4 +1,6 @@
 #!/system/bin/sh
+# Copyright (c) 2026 Flopster101
+# SPDX-License-Identifier: GPL-3.0
 # persistence.sh
 # Handles reading and writing to /cache/fk_feat
 # Usage: persistence.sh <action> [key] [value] [type]
