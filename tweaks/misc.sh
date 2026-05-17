@@ -1,4 +1,6 @@
 #!/system/bin/sh
+# Copyright (c) 2026 Flopster101
+# SPDX-License-Identifier: GPL-3.0
 # Misc Exynos Tweaks Backend Script
 # Handles: Block ED3, ESG Bursty Mode, GPU Clock Lock, GPU Overclock, Throttling Protection, High Touch Polling Rate
 

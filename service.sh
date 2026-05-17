@@ -1,4 +1,6 @@
 #!/system/bin/sh
+# Copyright (c) 2026 Flopster101
+# SPDX-License-Identifier: GPL-3.0
 # FloppyCompanion service script
 # This script applies saved tweaks after boot completes
 

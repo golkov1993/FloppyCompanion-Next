@@ -1,4 +1,6 @@
 #!/system/bin/sh
+# Copyright (c) 2026 Flopster101
+# SPDX-License-Identifier: GPL-3.0
 # Thermal Modes Tweak Backend Script (Floppy1280 only)
 # Only affects the Big cluster
 

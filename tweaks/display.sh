@@ -1,4 +1,6 @@
 #!/system/bin/sh
+# Copyright (c) 2026 Flopster101
+# SPDX-License-Identifier: GPL-3.0
 # Display Tweak Backend Script (FloppyTrinketMi only)
 
 DATA_DIR="/data/adb/floppy_companion"

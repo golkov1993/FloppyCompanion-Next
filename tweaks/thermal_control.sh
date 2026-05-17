@@ -1,4 +1,6 @@
 #!/system/bin/sh
+# Copyright (c) 2026 Flopster101
+# SPDX-License-Identifier: GPL-3.0
 # Thermal Control Tweak Backend Script (Floppy2100 only)
 # Exposes LITTLE/MID/BIG/G3D trip offsets directly in Celsius.
 

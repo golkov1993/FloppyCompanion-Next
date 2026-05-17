@@ -1,4 +1,6 @@
 #!/bin/bash
+# Copyright (c) 2026 Flopster101
+# SPDX-License-Identifier: GPL-3.0
 set -euo pipefail
 
 # Configuration

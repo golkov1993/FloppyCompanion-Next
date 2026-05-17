@@ -1,4 +1,6 @@
 #!/system/bin/sh
+# Copyright (c) 2026 Flopster101
+# SPDX-License-Identifier: GPL-3.0
 # LMKD (Low Memory Killer daemon) tweak backend
 
 DATA_DIR="/data/adb/floppy_companion"
