@@ -899,11 +899,34 @@ body {
 
 .dropdown-item {
     color: inherit;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
 }
 
 .dropdown-item.fc-selected {
     background-color: var(--md-sys-color-secondary-container);
     color: var(--md-sys-color-on-secondary-container);
+}
+
+.lang-code-btn-label {
+    margin-inline-start: 6px;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+}
+
+#lang-btn {
+    padding: 0 12px 0 8px;
+    border-radius: 20px !important;
+    min-width: 40px;
+}
+
+.lang-code-list-label {
+    font-size: 0.75rem;
+    opacity: 0.55;
+    font-weight: normal;
 }
 
 .dropdown-item.hidden {

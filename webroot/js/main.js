@@ -112,6 +112,12 @@ async function init() {
     function populateLanguageMenu() {
         if (!langMenu || !window.I18N) return;
 
+        // Update button label
+        const langBtnLabel = document.getElementById('lang-btn-label');
+        if (langBtnLabel) {
+            langBtnLabel.textContent = (I18N.currentLang || 'en').toUpperCase();
+        }
+
         langMenu.innerHTML = '';
         I18N.availableLanguages.forEach(lang => {
             const item = document.createElement('li');
@@ -121,7 +127,11 @@ async function init() {
             item.dataset.lang = lang.code;
             item.setAttribute('role', 'menuitemradio');
             item.setAttribute('aria-checked', String(isCurrent));
-            item.textContent = lang.name;
+
+            item.innerHTML = `
+                <span>${lang.name}</span>
+                <span class="lang-code-list-label">${lang.code}</span>
+            `;
             langMenu.appendChild(item);
         });
     }
