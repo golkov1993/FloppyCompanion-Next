@@ -2359,7 +2359,7 @@ beer-css.tweak-slider-scope .tweak-beer-slider:has(> input.beer-slider-input:dis
     flex-direction: column;
     gap: 14px;
     overflow: hidden;
-    max-height: 2000px;
+    max-height: 5000px;
     opacity: 1;
     transition: max-height 0.25s ease, opacity 0.2s ease;
 }

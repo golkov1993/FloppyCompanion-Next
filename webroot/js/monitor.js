@@ -12,6 +12,7 @@
     let swapHistory = new Array(HISTORY_POINTS).fill(null);
     let monitorTimer = null;
     let thermalControlTimer = null;
+    let voltageTimer = null;
     let lastUseBytes = false;
     let cpuViewMode = 'cluster';
     let isMonitorActive = false;
@@ -828,6 +829,47 @@
         return data;
     }
 
+    async function fetchVoltageData() {
+        const info = window.deviceInfo || {};
+        if (!info.is1280 && !info.is2100) return null;
+
+        const cmd = `for f in cpucl0_fv_table cpucl1_fv_table cpucl2_fv_table g3d_fv_table; do ` +
+            `[ -f "/sys/kernel/fvmap/fv_tables/$f" ] || continue; ` +
+            `echo "__FILE__:$f"; ` +
+            `cat "/sys/kernel/fvmap/fv_tables/$f"; ` +
+            `done`;
+
+        const output = await window.exec(cmd);
+        if (!output) return null;
+
+        const files = output.split('__FILE__:').filter(Boolean);
+        const data = {};
+
+        for (const file of files) {
+            const lines = file.trim().split('\n');
+            const fileName = lines[0].trim();
+            const table = [];
+            for (let i = 1; i < lines.length; i++) {
+                const line = lines[i].trim();
+                if (!line || line.startsWith('Freq')) continue;
+                const parts = line.split(/\s+/);
+                if (parts.length >= 2) {
+                    const row = {
+                        freq: parts[0],
+                        volt: parts[1]
+                    };
+                    const baseMatch = line.match(/\(base:\s+(\d+)\)/);
+                    if (baseMatch) {
+                        row.base = baseMatch[1];
+                    }
+                    table.push(row);
+                }
+            }
+            data[fileName] = table;
+        }
+        return data;
+    }
+
     function parseZramAlgorithm(raw) {
         const match = raw.match(/\[([^\]]+)\]/);
         if (match) return match[1];
@@ -1149,6 +1191,116 @@
         }
     }
 
+    function updateVoltageUI(data) {
+        const list = document.getElementById('monitor-voltage-list');
+        const voltageCard = document.getElementById('monitor-voltage-card');
+        if (!list || !voltageCard) return;
+
+        if (!data || Object.keys(data).length === 0) {
+            voltageCard.style.display = 'none';
+            return;
+        }
+
+        voltageCard.style.display = 'block';
+        list.innerHTML = '';
+        const info = window.deviceInfo || {};
+
+        const clusterFiles = info.is2100 ?
+            ['cpucl0_fv_table', 'cpucl1_fv_table', 'cpucl2_fv_table', 'g3d_fv_table'] :
+            ['cpucl0_fv_table', 'cpucl1_fv_table', 'g3d_fv_table'];
+
+        const roles = info.is2100 ?
+            [t('monitor.cpu.clusterLittle'), t('monitor.cpu.clusterBig'), t('monitor.cpu.clusterPrime'), t('monitor.gpu.title')] :
+            [t('monitor.cpu.clusterLittle'), t('monitor.cpu.clusterBig'), t('monitor.gpu.title')];
+
+        clusterFiles.forEach((fileName, idx) => {
+            if (!data[fileName]) return;
+
+            const tableData = data[fileName];
+            if (tableData.length === 0) return;
+
+            // Check if any row has undervolt (volt < base)
+            const hasUV = tableData.some(row => row.base && parseInt(row.volt) < parseInt(row.base));
+
+            const section = document.createElement('div');
+            section.className = 'monitor-section';
+            section.style.marginBottom = '12px';
+            section.style.padding = '10px';
+
+            let displayName = roles[idx];
+            if (fileName.startsWith('cpucl')) {
+                const num = fileName.replace('cpucl', '').replace('_fv_table', '');
+                displayName = `${t('monitor.cpu.clusterLabel', { id: num })} (${roles[idx]})`;
+            }
+
+            const title = document.createElement('div');
+            title.className = 'monitor-section-title';
+            title.textContent = displayName;
+            section.appendChild(title);
+
+            const tableContainer = document.createElement('div');
+            tableContainer.className = 'monitor-thermal-table';
+
+            // Header Row
+            const header = document.createElement('div');
+            header.className = 'monitor-thermal-row monitor-thermal-header';
+            header.style.padding = '4px 0';
+            header.style.fontSize = '12px';
+
+            // Grid columns: Freq, [UV], Volt, [Base]
+            // We'll use grid-template-columns directly to ensure alignment
+            const gridCols = hasUV ? '1.2fr 0.8fr 1fr 1fr' : '1.2fr 1fr';
+            header.style.gridTemplateColumns = gridCols;
+
+            let headerHtml = `<span class="monitor-thermal-cell">${t('monitor.voltage.freq')}</span>`;
+            if (hasUV) {
+                headerHtml += `<span class="monitor-thermal-cell">${t('monitor.voltage.uv')}</span>`;
+                headerHtml += `<span class="monitor-thermal-cell">${t('monitor.voltage.effVolt')}</span>`;
+                headerHtml += `<span class="monitor-thermal-cell">${t('monitor.voltage.baseVolt')}</span>`;
+            } else {
+                headerHtml += `<span class="monitor-thermal-cell">${t('monitor.voltage.voltage')}</span>`;
+            }
+            header.innerHTML = headerHtml;
+            tableContainer.appendChild(header);
+
+            const body = document.createElement('div');
+            body.className = 'monitor-thermal-body';
+
+            tableData.forEach(row => {
+                const rowEl = document.createElement('div');
+                rowEl.className = 'monitor-thermal-row';
+                rowEl.style.gridTemplateColumns = gridCols;
+                rowEl.style.padding = '4px 0';
+                rowEl.style.borderBottom = '1px solid var(--md-sys-color-surface-variant)';
+
+                const freqMhz = (parseInt(row.freq) / 1000).toFixed(0);
+                const voltMv = (parseInt(row.volt) / 1000).toFixed(1);
+
+                let rowHtml = `<span class="monitor-thermal-cell" style="font-size: 13px;">${freqMhz} MHz</span>`;
+
+                if (hasUV) {
+                    const baseMvNum = parseInt(row.base || row.volt);
+                    const voltMvNum = parseInt(row.volt);
+                    const uvPercent = baseMvNum > 0 ? ((1 - (voltMvNum / baseMvNum)) * 100).toFixed(1) : '0.0';
+                    const baseMv = (baseMvNum / 1000).toFixed(1);
+
+                    rowHtml += `<span class="monitor-thermal-cell" style="font-size: 12px; color: var(--md-sys-color-primary);">${uvPercent}%</span>`;
+                    rowHtml += `<span class="monitor-thermal-cell" style="font-size: 13px;">${voltMv} mV</span>`;
+                    rowHtml += `<span class="monitor-thermal-cell" style="font-size: 12px; opacity: 0.7;">${baseMv} mV</span>`;
+                } else {
+                    rowHtml += `<span class="monitor-thermal-cell" style="font-size: 13px;">${voltMv} mV</span>`;
+                }
+
+                rowEl.innerHTML = rowHtml;
+                body.appendChild(rowEl);
+            });
+
+            tableContainer.appendChild(body);
+            section.appendChild(tableContainer);
+            list.appendChild(section);
+        });
+    }
+
     async function refreshMonitor() {
         if (!isMonitorActive || document.hidden) return;
         const [memData, cpuData, gpuData, thermalData] = await Promise.all([
@@ -1169,6 +1321,12 @@
         updateThermalControlUI(thermalControlData);
     }
 
+    async function refreshVoltage() {
+        if (!isMonitorActive || document.hidden) return;
+        const voltageData = await fetchVoltageData();
+        updateVoltageUI(voltageData);
+    }
+
     function startMonitorUpdates() {
         if (monitorTimer) return;
         refreshMonitor();
@@ -1177,6 +1335,10 @@
         // Fetch immediately on first load, then start slow refresh
         refreshThermalControl().then(() => {
             thermalControlTimer = setInterval(refreshThermalControl, 5000);
+        });
+        // Voltage updates every 5 seconds
+        refreshVoltage().then(() => {
+            voltageTimer = setInterval(refreshVoltage, 5000);
         });
     }
 
@@ -1188,31 +1350,13 @@
             clearInterval(thermalControlTimer);
             thermalControlTimer = null;
         }
+        if (voltageTimer) {
+            clearInterval(voltageTimer);
+            voltageTimer = null;
+        }
     }
 
-    function initMonitor() {
-        const card = document.getElementById('monitor-memory-card');
-        if (!card) return;
-
-        // Reset history arrays
-        memHistory = new Array(HISTORY_POINTS).fill(null);
-        swapHistory = new Array(HISTORY_POINTS).fill(null);
-        thermalMinMax = {}; // Reset thermal min/max tracking
-
-        const memCanvas = document.getElementById('monitor-mem-graph');
-        const swapCanvas = document.getElementById('monitor-swap-graph');
-
-        stopMonitorUpdates();
-        if (isMonitorActive && !document.hidden) {
-            startMonitorUpdates();
-        }
-
-        setupCollapse('monitor-memory-card', 'monitor-memory-toggle');
-        setupCollapse('monitor-cpu-card', 'monitor-cpu-toggle');
-        setupCollapse('monitor-gpu-card', 'monitor-gpu-toggle');
-        setupCollapse('monitor-thermal-card', 'monitor-thermal-toggle');
-
-        // Show platform-specific thermal control rows immediately based on platform
+    function updatePlatformVisibility() {
         const info = window.deviceInfo || {};
         const is2100 = info.is2100;
         const is1280 = info.is1280;
@@ -1246,6 +1390,33 @@
             document.getElementById('monitor-thermal-mode-row').style.display = 'flex';
             document.getElementById('monitor-thermal-custom-freq-row').style.display = 'flex';
         }
+    }
+
+    function initMonitor() {
+        const card = document.getElementById('monitor-memory-card');
+        if (!card) return;
+
+        // Reset history arrays
+        memHistory = new Array(HISTORY_POINTS).fill(null);
+        swapHistory = new Array(HISTORY_POINTS).fill(null);
+        thermalMinMax = {}; // Reset thermal min/max tracking
+
+        const memCanvas = document.getElementById('monitor-mem-graph');
+        const swapCanvas = document.getElementById('monitor-swap-graph');
+
+        stopMonitorUpdates();
+        if (isMonitorActive && !document.hidden) {
+            startMonitorUpdates();
+        }
+
+        setupCollapse('monitor-memory-card', 'monitor-memory-toggle');
+        setupCollapse('monitor-cpu-card', 'monitor-cpu-toggle');
+        setupCollapse('monitor-gpu-card', 'monitor-gpu-toggle');
+        setupCollapse('monitor-thermal-card', 'monitor-thermal-toggle');
+        setupCollapse('monitor-voltage-card', 'monitor-voltage-toggle');
+
+        // Show platform-specific thermal control rows based on platform
+        updatePlatformVisibility();
 
         document.addEventListener('tabChanged', (event) => {
             const idx = event?.detail?.index;
@@ -1285,6 +1456,13 @@
         document.addEventListener('languageChanged', () => {
             updateDirtyLabels(lastUseBytes);
             refreshMonitor();
+        });
+
+        document.addEventListener('deviceDetected', () => {
+            updatePlatformVisibility();
+            refreshMonitor();
+            refreshThermalControl();
+            refreshVoltage();
         });
     }
 

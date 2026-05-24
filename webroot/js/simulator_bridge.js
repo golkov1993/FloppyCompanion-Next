@@ -344,6 +344,34 @@
             'description=Simulator session'
         ].join('\n');
 
+        if (isExynos) {
+            state.files['/sys/kernel/fvmap/fv_tables/cpucl0_fv_table'] = [
+                'Freq(kHz)\tVolt(uV)\t[UV: 5%]',
+                '2600000\t1056875\t(base: 1112500)',
+                '1378000\t641250\t(base: 675000)',
+                '400000\t504687\t(base: 531250)'
+            ].join('\n');
+            state.files['/sys/kernel/fvmap/fv_tables/cpucl1_fv_table'] = [
+                'Freq(kHz)\tVolt(uV)\t[UV: 2%]',
+                '3207000\t1151500\t(base: 1175000)',
+                '1352000\t630875\t(base: 643750)',
+                '400000\t490000\t(base: 500000)'
+            ].join('\n');
+            if (config.family === '2100') {
+                state.files['/sys/kernel/fvmap/fv_tables/cpucl2_fv_table'] = [
+                    'Freq(kHz)\tVolt(uV)\t[UV: 4%]',
+                    '3207000\t1128000\t(base: 1175000)',
+                    '1352000\t630000\t(base: 656250)',
+                    '400000\t474000\t(base: 493750)'
+                ].join('\n');
+            }
+            state.files['/sys/kernel/fvmap/fv_tables/g3d_fv_table'] = [
+                'Freq(kHz)\tVolt(uV)\t[UV: 2%]',
+                '949000\t820750\t(base: 837500)',
+                '130000\t526750\t(base: 537500)'
+            ].join('\n');
+        }
+
         state.files['/data/adb/floppy_companion/presets/.defaults.json'] = JSON.stringify(defaultsJson, null, 2);
         state.files['/data/adb/modules/floppy_companion/.patch_log'] = '';
 
@@ -767,6 +795,18 @@
 
         if (cmd.startsWith('mkdir -p ')) {
             return '';
+        }
+
+        if (cmd.startsWith('for f in cpucl0_fv_table cpucl1_fv_table cpucl2_fv_table g3d_fv_table; do')) {
+            const files = ['cpucl0_fv_table', 'cpucl1_fv_table', 'cpucl2_fv_table', 'g3d_fv_table'];
+            let output = '';
+            files.forEach(f => {
+                const path = `/sys/kernel/fvmap/fv_tables/${f}`;
+                if (Object.prototype.hasOwnProperty.call(state.files, path)) {
+                    output += `__FILE__:${f}\n${state.files[path]}\n`;
+                }
+            });
+            return output;
         }
 
         return '';

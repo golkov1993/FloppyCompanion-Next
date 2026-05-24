@@ -129,6 +129,15 @@
             "g3dOffset": "G3D Offset",
             "thermalMode": "Thermal Mode",
             "customFreq": "Custom Frequency"
+        },
+        "voltage": {
+            "title": "Voltage",
+            "noData": "No voltage data available",
+            "freq": "Freq.",
+            "uv": "UV",
+            "effVolt": "Eff. Volt.",
+            "baseVolt": "Base Volt.",
+            "voltage": "Voltage"
         }
     },
     "tweaks": {
