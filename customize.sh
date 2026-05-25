@@ -10,6 +10,7 @@ ui_print ""
 
 # Get kernel version
 KERN_VER=$(uname -r)
+KERN_NAME=""
 
 get_device_prop() {
     for prop_path in "/sys/kernel/sec_detect/$1" "/sys/mi_detect/$1"; do
@@ -42,6 +43,46 @@ resolve_kernel_name() {
             echo "$(echo "$1" | grep -o 'Floppy[A-Za-z0-9]*' | head -n 1)"
             ;;
     esac
+}
+
+resolve_icon_family() {
+    case "$1" in
+        Floppy1280)
+            echo "1280"
+            ;;
+        Floppy2100)
+            echo "2100"
+            ;;
+        FloppyTrinketMi)
+            echo "trinket"
+            ;;
+        *)
+            return 1
+            ;;
+    esac
+}
+
+install_webui_icon() {
+    if [ -z "$MODPATH" ]; then
+        ui_print "- ⚠️  Could not access module path; keeping default icon."
+        return 0
+    fi
+
+    ICON_FAMILY=$(resolve_icon_family "$KERN_NAME" 2>/dev/null)
+    ICON_SOURCE=""
+
+    if [ -n "$ICON_FAMILY" ]; then
+        ICON_SOURCE="$MODPATH/icons/icon-${ICON_FAMILY}.png"
+    fi
+
+    if [ -n "$ICON_SOURCE" ] && [ -f "$ICON_SOURCE" ]; then
+        cp -f "$ICON_SOURCE" "$MODPATH/webroot/icon.png"
+        ui_print "- Applied $KERN_NAME WebUI icon."
+    else
+        ui_print "- ⚠️  No icon for this variant; keeping default icon."
+    fi
+
+    rm -rf "$MODPATH/icons"
 }
 
 ui_print "- Detecting kernel..."
@@ -153,6 +194,9 @@ else
 fi
 
 ui_print "- Installing module files..."
+ui_print ""
+
+install_webui_icon
 ui_print ""
 
 # Create persistent data directory
