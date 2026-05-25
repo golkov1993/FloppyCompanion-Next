@@ -643,6 +643,36 @@ window.setReadonlyPatch = function (val) {
 }
 
 // --- Bubble Logic ---
+function positionStatusBubble(bubble) {
+    if (!bubble) return;
+
+    const viewportPadding = 8;
+    const anchor = bubble.closest('.tooltip-anchor, .status-icon-wrapper') || bubble.parentElement;
+    const anchorRect = anchor ? anchor.getBoundingClientRect() : null;
+
+    bubble.classList.remove('bottom');
+
+    let rect = bubble.getBoundingClientRect();
+    const wouldClipTop = rect.top < viewportPadding;
+    const hasRoomBelow = anchorRect
+        ? (window.innerHeight - anchorRect.bottom) >= (rect.height + viewportPadding)
+        : false;
+
+    if (wouldClipTop && hasRoomBelow) {
+        bubble.classList.add('bottom');
+        rect = bubble.getBoundingClientRect();
+    }
+
+    const wouldClipBottom = rect.bottom > (window.innerHeight - viewportPadding);
+    const hasRoomAbove = anchorRect
+        ? anchorRect.top >= (rect.height + viewportPadding)
+        : true;
+
+    if (wouldClipBottom && hasRoomAbove) {
+        bubble.classList.remove('bottom');
+    }
+}
+
 window.toggleBubble = function (id, event) {
     if (event) event.stopPropagation();
     const bubble = document.getElementById(id);
@@ -651,7 +681,11 @@ window.toggleBubble = function (id, event) {
         document.querySelectorAll('.status-bubble').forEach(b => {
             if (b.id !== id) b.classList.add('hidden');
         });
-        bubble.classList.toggle('hidden');
+        const shouldShow = bubble.classList.contains('hidden');
+        bubble.classList.toggle('hidden', !shouldShow);
+        if (shouldShow) {
+            requestAnimationFrame(() => positionStatusBubble(bubble));
+        }
     }
 }
 
