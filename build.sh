@@ -44,12 +44,35 @@ ZIP_PATH="$OUTPUT_DIR/$ZIP_NAME"
 
 # --- Magiskboot Handling ---
 echo "Resolving latest Magisk version..."
-LATEST_URL=$(curl -sI https://github.com/topjohnwu/Magisk/releases/latest | grep -i "location:" | awk '{print $2}' | tr -d '\r\n' | xargs)
-TAG=${LATEST_URL##*/}
-echo "Latest tag: $TAG"
+LATEST_URL=$(curl -sI https://github.com/topjohnwu/Magisk/releases/latest | grep -i "location:" | awk '{print $2}' | tr -d '\r\n' | xargs || true)
 
-MAGISK_APK="Magisk-${TAG}.apk"
-MAGISK_URL="https://github.com/topjohnwu/Magisk/releases/download/${TAG}/${MAGISK_APK}"
+MAGISK_APK=""
+if [ -n "$LATEST_URL" ]; then
+    TAG=${LATEST_URL##*/}
+    echo "Latest tag: $TAG"
+    MAGISK_APK="Magisk-${TAG}.apk"
+    MAGISK_URL="https://github.com/topjohnwu/Magisk/releases/download/${TAG}/${MAGISK_APK}"
+
+    if [ -f "../$MAGISK_APK" ]; then
+        : # Skip download
+    else
+        echo "Downloading $MAGISK_APK..."
+        if ! curl -L -f --progress-bar -o "../$MAGISK_APK" "$MAGISK_URL"; then
+            echo "Download failed, falling back to existing APKs..."
+            MAGISK_APK=$(ls ../Magisk-v*.apk 2>/dev/null | sort -V | tail -n 1 | xargs basename 2>/dev/null || true)
+        fi
+    fi
+else
+    echo "Could not resolve latest version, falling back to existing APKs..."
+    MAGISK_APK=$(ls ../Magisk-v*.apk 2>/dev/null | sort -V | tail -n 1 | xargs basename 2>/dev/null || true)
+fi
+
+if [ -z "$MAGISK_APK" ] || [ ! -f "../$MAGISK_APK" ]; then
+    echo "Error: Magisk APK missing and could not be downloaded." >&2
+    exit 1
+fi
+
+echo "Using Magisk APK: $MAGISK_APK"
 TOOLS_DIR="$MODULE_DIR/tools"
 FKFEAT_DIR="$TOOLS_DIR/fkfeat"
 
@@ -116,13 +139,6 @@ fi
 echo "Building fkfeat..."
 make -s -C "$FKFEAT_DIR" clean
 make -s -C "$FKFEAT_DIR" CC=aarch64-linux-gnu-gcc
-
-if [ -f "../$MAGISK_APK" ]; then
-    rm "../$MAGISK_APK"
-fi
-
-echo "Downloading $MAGISK_APK..."
-curl -L -o "../$MAGISK_APK" "$MAGISK_URL" 2>/dev/null
 
 # Extract ARM64 magiskboot
 echo "Extracting magiskboot (arm64)..."
