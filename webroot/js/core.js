@@ -21,20 +21,102 @@ function getUniqueCallbackName(prefix) {
     return `${prefix}_callback_${Date.now()}_${callbackCounter++}`;
 }
 
+window.FCLog = window.FCLog || (() => {
+    let sequence = 0;
+
+    const isEnabled = () => {
+        try {
+            return localStorage.getItem('fc_debug_console') !== '0';
+        } catch {
+            return true;
+        }
+    };
+    const nextId = () => ++sequence;
+    const now = () => (typeof performance !== 'undefined' && performance.now) ? performance.now() : Date.now();
+    const duration = (startedAt) => `${Math.round(now() - startedAt)}ms`;
+    const trimOutput = (value) => {
+        const text = String(value ?? '').trim();
+        if (text.length <= 4000) return text;
+        return `${text.slice(0, 4000)}\n... [truncated ${text.length - 4000} chars]`;
+    };
+
+    const write = (method, ...args) => {
+        if (!isEnabled()) return;
+        const logger = console[method] || console.log;
+        logger.call(console, ...args);
+    };
+
+    const group = (title, body, method = 'debug') => {
+        if (!isEnabled()) return;
+        const canGroup = typeof console.groupCollapsed === 'function' && typeof console.groupEnd === 'function';
+        if (canGroup) console.groupCollapsed(title);
+        else write(method, title);
+
+        try {
+            body();
+        } finally {
+            if (canGroup) console.groupEnd();
+        }
+    };
+
+    return {
+        nextId,
+        now,
+        duration,
+        trimOutput,
+        debug: (...args) => write('debug', '[FC]', ...args),
+        info: (...args) => write('info', '[FC]', ...args),
+        warn: (...args) => write('warn', '[FC]', ...args),
+        error: (...args) => write('error', '[FC]', ...args),
+        group
+    };
+})();
+
+if (!window.__fcGlobalConsoleLoggingBound) {
+    window.__fcGlobalConsoleLoggingBound = true;
+
+    window.addEventListener('error', (event) => {
+        window.FCLog.error('uncaught error', {
+            message: event.message,
+            source: event.filename,
+            line: event.lineno,
+            column: event.colno,
+            error: event.error
+        });
+    });
+
+    window.addEventListener('unhandledrejection', (event) => {
+        window.FCLog.error('unhandled promise rejection', event.reason);
+    });
+}
+
 // Global exec function
 window.exec = async function (command) {
+    const log = window.FCLog;
+    const execId = log.nextId();
+    const startedAt = log.now();
+    log.debug(`shell #${execId} start`, command);
+
     if (window.__FC_SIM_ACTIVE && typeof window.__FC_SIM_EXEC === 'function') {
         try {
             const output = await window.__FC_SIM_EXEC(command);
-            return output ? String(output).trim() : '';
+            const trimmedOutput = output ? String(output).trim() : '';
+            log.group(`[FC] shell #${execId} simulator ok (${log.duration(startedAt)})`, () => {
+                console.debug('command:', command);
+                if (trimmedOutput) console.debug('stdout:', log.trimOutput(trimmedOutput));
+            });
+            return trimmedOutput;
         } catch (e) {
-            console.error('Simulator exec error', e);
+            log.group(`[FC] shell #${execId} simulator error (${log.duration(startedAt)})`, () => {
+                console.debug('command:', command);
+                console.error(e);
+            }, 'error');
             return null;
         }
     }
 
     if (typeof ksu === 'undefined') {
-        console.error("ksu object is undefined");
+        log.error(`shell #${execId} failed: ksu object is undefined`, command);
         return null;
     }
 
@@ -45,10 +127,20 @@ window.exec = async function (command) {
             delete window[callbackFuncName];
 
             if (errno !== 0) {
-                console.error(`Command failed (errno ${errno}): ${command}`, stderr);
+                log.group(`[FC] shell #${execId} failed errno ${errno} (${log.duration(startedAt)})`, () => {
+                    console.debug('command:', command);
+                    if (stdout) console.debug('stdout:', log.trimOutput(stdout));
+                    if (stderr) console.error('stderr:', log.trimOutput(stderr));
+                }, 'error');
                 resolve(null);
             } else {
-                resolve(stdout ? stdout.trim() : '');
+                const trimmedStdout = stdout ? stdout.trim() : '';
+                log.group(`[FC] shell #${execId} ok (${log.duration(startedAt)})`, () => {
+                    console.debug('command:', command);
+                    if (trimmedStdout) console.debug('stdout:', log.trimOutput(trimmedStdout));
+                    if (stderr) console.warn('stderr:', log.trimOutput(stderr));
+                });
+                resolve(trimmedStdout);
             }
         };
 
@@ -56,7 +148,10 @@ window.exec = async function (command) {
             ksu.exec(command, JSON.stringify({}), callbackFuncName);
         } catch (e) {
             delete window[callbackFuncName];
-            console.error("KSU exec error", e);
+            log.group(`[FC] shell #${execId} bridge error (${log.duration(startedAt)})`, () => {
+                console.debug('command:', command);
+                console.error(e);
+            }, 'error');
             resolve(null);
         }
     });

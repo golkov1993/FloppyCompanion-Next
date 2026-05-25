@@ -576,11 +576,35 @@ function buildTweakCommand(scriptName, action, args = []) {
 }
 
 window.runTweakBackend = async function (scriptName, action, ...args) {
+    const log = window.FCLog;
+    const opId = log ? log.nextId() : null;
+    const startedAt = log ? log.now() : 0;
+
+    if (log) {
+        log.info(`tweak #${opId} ${scriptName}:${action} start`, args);
+    }
+
     try {
         const cmd = buildTweakCommand(scriptName, action, args);
-        return await exec(cmd);
+        const output = await exec(cmd);
+
+        if (log) {
+            log.group(`[FC] tweak #${opId} ${scriptName}:${action} done (${log.duration(startedAt)})`, () => {
+                if (args.length > 0) console.debug('args:', args);
+                if (output) console.debug('output:', log.trimOutput(output));
+            });
+        }
+
+        return output;
     } catch (error) {
-        console.error(`Tweak backend error (${scriptName}:${action})`, error);
+        if (log) {
+            log.group(`[FC] tweak #${opId} ${scriptName}:${action} error (${log.duration(startedAt)})`, () => {
+                if (args.length > 0) console.debug('args:', args);
+                console.error(error);
+            }, 'error');
+        } else {
+            console.error(`Tweak backend error (${scriptName}:${action})`, error);
+        }
         return '';
     }
 };
@@ -736,11 +760,27 @@ window.bindSaveApplyButtons = function (prefix, saveFn, applyFn) {
     const btnApply = document.getElementById(`${prefix}-btn-apply`);
     const btnSaveApply = document.getElementById(`${prefix}-btn-save-apply`);
 
-    if (btnSave) btnSave.addEventListener('click', saveFn);
-    if (btnApply) btnApply.addEventListener('click', applyFn);
+    const runAction = async (name, fn) => {
+        const log = window.FCLog;
+        const startedAt = log ? log.now() : 0;
+        if (log) log.info(`ui action ${prefix}:${name} start`);
+
+        try {
+            const result = await fn();
+            if (log) log.info(`ui action ${prefix}:${name} done (${log.duration(startedAt)})`);
+            return result;
+        } catch (error) {
+            if (log) log.error(`ui action ${prefix}:${name} error (${log.duration(startedAt)})`, error);
+            else console.error(`Tweak action error (${prefix}:${name})`, error);
+            throw error;
+        }
+    };
+
+    if (btnSave) btnSave.addEventListener('click', () => runAction('save', saveFn));
+    if (btnApply) btnApply.addEventListener('click', () => runAction('apply', applyFn));
     if (btnSaveApply) btnSaveApply.addEventListener('click', async () => {
-        await saveFn();
-        await applyFn();
+        await runAction('save', saveFn);
+        await runAction('apply', applyFn);
     });
 };
 
