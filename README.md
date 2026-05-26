@@ -2,25 +2,36 @@
 
 <p align="center"><img src="docs/images/floppycompanion.png" alt="FloppyCompanion" width="720" /></p>
 
+<p align="center">
+  <a href="https://github.com/FlopKernel-Series/FloppyCompanion/actions/workflows/build.yml">
+    <img src="https://img.shields.io/github/actions/workflow/status/FlopKernel-Series/FloppyCompanion/build.yml?branch=master" alt="Build Status">
+  </a>
+  <a href="https://github.com/FlopKernel-Series/FloppyCompanion/releases/latest">
+    <img src="https://img.shields.io/github/v/release/FlopKernel-Series/FloppyCompanion" alt="Latest Release">
+  </a>
+  <a href="https://github.com/FlopKernel-Series/FloppyCompanion/releases">
+    <img src="https://img.shields.io/github/downloads/FlopKernel-Series/FloppyCompanion/total" alt="Downloads">
+  </a>
+  <a href="https://github.com/FlopKernel-Series/FloppyCompanion/blob/master/repo/LICENSE">
+    <img src="https://img.shields.io/github/license/FlopKernel-Series/FloppyCompanion" alt="License">
+  </a>
+</p>
+
 FloppyCompanion is a KernelSU WebUI module for configuring FloppyKernel variants. It exposes kernel feature toggles, device-specific tweaks, and a presets system through a BeerCSS-backed Material Design interface.
 
 ## Requirements
-- Root solution:
 
-        - KernelSU (recommended)
+- **Root solution:**
+  - KernelSU (recommended)
+  - Magisk (via KernelSU WebUI compatibility)
+  - APatch (untested)
 
-        - Magisk (via KernelSU WebUI compatibility)
+- **FloppyKernel installed:**
+  - **Floppy1280:** v6.2+ supported
+  - **Floppy2100:** v1.0+ supported
+  - **FloppyTrinketMi:** v2.0b+ required
 
-        - APatch (untested)
-- FloppyKernel installed:
-
-        - Floppy1280: v6.2+ supported
-
-        - Floppy2100: v1.0+ supported
-        
-        - FloppyTrinketMi: v2.0b+ required
-
-Note: If you spoof the kernel version (SusFS, BRENE), feature detection and patching will break.
+> **Note:** If you spoof the kernel version (SusFS, BRENE), feature detection and patching will break.
 
 ## How it works
 - Reads current kernel cmdline and sysfs state for feature/tweak status.
@@ -48,28 +59,37 @@ Note: If you spoof the kernel version (SusFS, BRENE), feature detection and patc
 4. (Optional) Save your configuration as a preset.
 
 ## Downloads
-Releases are published here:
-- https://github.com/FlopKernel-Series/FloppyCompanion/releases
-
-Alternative (CI builds via nightly.link):
-- https://nightly.link/FlopKernel-Series/FloppyCompanion/workflows/build/master?preview
+- **Stable releases:** [GitHub Releases](https://github.com/FlopKernel-Series/FloppyCompanion/releases)
+- **CI builds:** [nightly.link (master preview)](https://nightly.link/FlopKernel-Series/FloppyCompanion/workflows/build/master?preview)
 
 ## Screenshots
-<p>
-        <img src="docs/images/exy2100/floppy2100_home.jpg" width="240" />
-        <img src="docs/images/exy2100/floppy2100_feat.jpg" width="240" />
-        <img src="docs/images/exy2100/floppy2100_tweaks.jpg" width="240" />
-</p>
-<p>
-        <img src="docs/images/exy1280/floppy1280_home.jpg" width="240" />
-        <img src="docs/images/exy1280/floppy1280_feat.jpg" width="240" />
-        <img src="docs/images/exy1280/floppy1280_tweaks.jpg" width="240" />
-</p>
-<p>
-        <img src="docs/images/trinket/floppytrinketmi_home.png" width="240" />
-        <img src="docs/images/trinket/floppytrinketmi_feat.png" width="240" />
-        <img src="docs/images/trinket/floppytrinketmi_tweaks.png" width="240" />
-</p>
+
+<details>
+  <summary><b>Floppy2100</b></summary>
+  <p align="center">
+    <img src="docs/images/exy2100/floppy2100_home.jpg" width="240" />
+    <img src="docs/images/exy2100/floppy2100_feat.jpg" width="240" />
+    <img src="docs/images/exy2100/floppy2100_tweaks.jpg" width="240" />
+  </p>
+</details>
+
+<details>
+  <summary><b>Floppy1280</b></summary>
+  <p align="center">
+    <img src="docs/images/exy1280/floppy1280_home.jpg" width="240" />
+    <img src="docs/images/exy1280/floppy1280_feat.jpg" width="240" />
+    <img src="docs/images/exy1280/floppy1280_tweaks.jpg" width="240" />
+  </p>
+</details>
+
+<details>
+  <summary><b>FloppyTrinketMi</b></summary>
+  <p align="center">
+    <img src="docs/images/trinket/floppytrinketmi_home.png" width="240" />
+    <img src="docs/images/trinket/floppytrinketmi_feat.png" width="240" />
+    <img src="docs/images/trinket/floppytrinketmi_tweaks.png" width="240" />
+  </p>
+</details>
 
 ## Build
 ```bash
@@ -84,39 +104,26 @@ The module zip will be emitted by the build script in the repo directory.
 - If features don’t show up, confirm the kernel name matches a supported FloppyKernel variant.
 
 ## Kernel repositories
-- https://github.com/FlopKernel-Series/flop_s5e8825_kernel
-- https://github.com/FlopKernel-Series/flop_exynos2100_kernel
-- https://github.com/FlopKernel-Series/flop_trinket-mi_kernel
+- [FloppyKernel Exynos 1280](https://github.com/FlopKernel-Series/flop_s5e8825_kernel)
+- [FloppyKernel Exynos 2100](https://github.com/FlopKernel-Series/flop_exynos2100_kernel)
+- [FloppyKernel Trinket/Mi](https://github.com/FlopKernel-Series/flop_trinket-mi_kernel)
 
 ## Language support
 FloppyCompanion currently supports:
-- English
-- Spanish
-- Polish
-- Portuguese (Brazil)
-- Turkish
-- Ukrainian
-- Vietnamese
-- Russian
-- Arabic
-- Azerbaijani
-- Albanian (Standard Dialect)
+- English, Spanish, Polish, Portuguese (Brazil), Turkish, Ukrainian, Vietnamese, Russian, Arabic, Azerbaijani, Albanian (Standard)
 
-Translation guide: docs/TRANSLATION_GUIDE.md
+> **Want to translate?** See our [Translation Guide](docs/TRANSLATION_GUIDE.md).
 
 ## Contributing
-Contributions and translations are welcome. See docs/TRANSLATION_GUIDE.md and docs/TRANSLATORS.md.
+Contributions and translations are welcome. See [TRANSLATION_GUIDE.md](docs/TRANSLATION_GUIDE.md) and [TRANSLATORS.md](docs/TRANSLATORS.md).
 
 ## Credits
-- BeerCSS: https://www.beercss.com/
-- FloppyKernel community testers
-- Hybrid Mount UI inspiration: https://github.com/Hybrid-Mount/meta-hybrid_mount
-- All translators and contributors
+- **[BeerCSS](https://www.beercss.com/)** for the Material Design UI framework.
+- **[Hybrid Mount](https://github.com/Hybrid-Mount/meta-hybrid_mount)** for the WebUI inspiration.
+- **FloppyKernel community testers, translators, and contributors.**
 
 ## License
-GNU GPLv3
+Released under the **[GNU GPLv3](LICENSE)** license.
 
 ## Links
-- https://t.me/Floppy1280
-- https://t.me/Floppy2100
-- https://t.me/FloppyTrinketMi
+- **Telegram Groups:** [Floppy1280](https://t.me/Floppy1280) | [Floppy2100](https://t.me/Floppy2100) | [FloppyTrinketMi](https://t.me/FloppyTrinketMi)
