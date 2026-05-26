@@ -1413,9 +1413,16 @@
         const info = window.deviceInfo || {};
         const is2100 = info.is2100;
         const is1280 = info.is1280;
+        const isExynos = is2100 || is1280;
+
         const voltageCard = document.getElementById('monitor-voltage-card');
         if (voltageCard) {
-            voltageCard.style.display = (is2100 || is1280) ? 'block' : 'none';
+            voltageCard.style.display = isExynos ? 'block' : 'none';
+        }
+
+        const thermalControlSection = document.getElementById('monitor-thermal-control');
+        if (thermalControlSection) {
+            thermalControlSection.style.display = isExynos ? 'block' : 'none';
         }
 
         if (is2100) {
@@ -1437,15 +1444,15 @@
             document.getElementById('monitor-thermal-prime-offset-row').style.display = 'none';
             document.getElementById('monitor-thermal-g3d-offset-row').style.display = 'none';
         } else {
-            // Platform unknown - show all rows, will be corrected when data arrives
-            document.getElementById('monitor-thermal-perf-mode-row').style.display = 'flex';
-            document.getElementById('monitor-thermal-throttling-protection-row').style.display = 'flex';
-            document.getElementById('monitor-thermal-little-offset-row').style.display = 'flex';
-            document.getElementById('monitor-thermal-big-offset-row').style.display = 'flex';
-            document.getElementById('monitor-thermal-prime-offset-row').style.display = 'flex';
-            document.getElementById('monitor-thermal-g3d-offset-row').style.display = 'flex';
-            document.getElementById('monitor-thermal-mode-row').style.display = 'flex';
-            document.getElementById('monitor-thermal-custom-freq-row').style.display = 'flex';
+            // Non-Exynos - hide all specific rows just to be safe
+            document.getElementById('monitor-thermal-perf-mode-row').style.display = 'none';
+            document.getElementById('monitor-thermal-throttling-protection-row').style.display = 'none';
+            document.getElementById('monitor-thermal-little-offset-row').style.display = 'none';
+            document.getElementById('monitor-thermal-big-offset-row').style.display = 'none';
+            document.getElementById('monitor-thermal-prime-offset-row').style.display = 'none';
+            document.getElementById('monitor-thermal-g3d-offset-row').style.display = 'none';
+            document.getElementById('monitor-thermal-mode-row').style.display = 'none';
+            document.getElementById('monitor-thermal-custom-freq-row').style.display = 'none';
         }
     }
 
