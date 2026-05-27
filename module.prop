@@ -1,7 +1,7 @@
 id=floppy_companion
 name=FloppyCompanion
-version=v1.1.0
-versionCode=11000
+version=v1.1.1
+versionCode=11100
 author=Flopster101
 description=Companion module to tweak FloppyKernel.
 updateJson=https://raw.githubusercontent.com/FlopKernel-Series/FloppyCompanion/master/update.json
