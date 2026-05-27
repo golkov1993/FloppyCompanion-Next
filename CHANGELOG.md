@@ -1,5 +1,32 @@
 All notable changes to FloppyCompanion will be documented in this file.
 
+## v1.1.1
+- Many improvements to UI to make more faithful to MD3.
+- Add support for Dynamic Colors "Monet" to UI.
+- New language prompt on first run.
+- Fix clipping tooltips.
+- AOSP Mode state now read for Exynos 2100.
+- New Thermal monitor section.
+- New Voltage monitor section (Exynos only).
+- Exynos Frequency Clamp support (only Floppy2100 for now).
+- Sound control fixes for Trinket.
+- New languages: Albanian, Polish.
+- New icons for WebUI shortcuts.
+- Fix some lags on the UI.
+
+(Any changes not mentioned above are instead shown below in PRs).
+
+### PRs
+* Update Vietnamese by @ThePrimalPea in https://github.com/FlopKernel-Series/FloppyCompanion/pull/28
+* module: Add High Touch Polling Toggle Toggle by @milxnaq in https://github.com/FlopKernel-Series/FloppyCompanion/pull/29
+* build.sh: Silence output from `make` and `curl` by @milxnaq in https://github.com/FlopKernel-Series/FloppyCompanion/pull/31
+* lang: Import Polish translations by @milxnaq in https://github.com/FlopKernel-Series/FloppyCompanion/pull/30
+* Add Albanian standard dialect support by @3q5i in https://github.com/FlopKernel-Series/FloppyCompanion/pull/33
+* Fix some translations in albanian by @3q5i in https://github.com/FlopKernel-Series/FloppyCompanion/pull/34
+* Add Albanian (Standard Dialect) to languages list by @3q5i in https://github.com/FlopKernel-Series/FloppyCompanion/pull/35
+* treewide: Add SPDX License headers by @milxnaq in https://github.com/FlopKernel-Series/FloppyCompanion/pull/36
+* Update ar.json by @maydoxx in https://github.com/FlopKernel-Series/FloppyCompanion/pull/38
+
 ## v1.1.0
 - Support for FloppyKernel for **Exynos 2100**.
 - New improved BeerCSS-based MD3 user interface!
