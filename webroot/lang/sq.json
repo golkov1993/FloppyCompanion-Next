@@ -348,7 +348,7 @@
       "htpr": "Aktivizon leximin e prekjes 240Hz.",
       "gpuClkLock": "Kur aktivizohet, ndalon ndryshimin e frekuencave min/maks të GPU-së. E dobishme për të bllokuar frekuencat e GPU-së në një interval të caktuar.",
       "throttlersProtection": "Kur aktivizohet, userspace (shërbimet dhe proceset e ROM-it) bllokohet nga throttling i CPU-së dhe GPU-së, kështu që throttling ndodh vetëm në nivel kernel-i.",
-      "gpuUnlock": "Aktivizon menjëherë overclock të GPU-së. Punon vetëm në modalitetet Superfloppy overclock (1, 2, 3). Çaktivizohet në UI nëse Modaliteti i zhbllokuar është i fikur ose në modalitete jo-OC.",
+      "gpuUnlock": "Aktivizon menjëherë overclock të GPU-së.",
       "gpuUnlock2100": "Aktivizon menjëherë overclock të GPU-së. Në Floppy2100, kjo e ngre GPU-në në 949 MHz dhe mund të ndizet/fiket në çdo kohë me efekt të menjëhershëm.",
       "soundcontrol": "Rregullon përforcimin e kufjeve dhe mikrofonit në decibel. Vlerat më të larta rrisin volumin. Përdor ndarjen Majtas/Djathtas për të kontrolluar veçmas kanalin e majtë dhe të djathtë.",
       "charging": "Konfiguro sjelljen e avancuar të karikimit.",

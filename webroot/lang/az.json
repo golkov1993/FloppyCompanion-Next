@@ -270,7 +270,7 @@
             "undervolt": "Enerjiyə qənaət etmək və istiliyi azaltmaq üçün gərginliyi azaldır. Overclock ilə birlikdə tövsiyə edilmir.",
             "blockEd3": "Yaxınlıq sensoru aktiv olduqda ekranın yenilənmə tezliyinin düşməsinin qarşısını alır. Həmçinin sensoru daha az həssas edir.",
             "gpuClkLock": "Aktiv edildikdə, GPU-nun minimum/maksimum tezliklərinin dəyişdirilməsinə imkan vermir.",
-            "gpuUnlock": "GPU overclock-u dərhal aktiv edir. Yalnız Superfloppy rejimində işləyir.",
+            "gpuUnlock": "GPU overclock-u dərhal aktiv edir.",
             "soundcontrol": "Qulaqlıq və mikrofon səsini desibel ilə tənzimləyin. Yüksək dəyərlər səsi artırır.",
             "charging": "Təkmil enerji doldurma parametrləri.",
             "chargingBypass": "Cihazın USB-dən qidalanmasına icazə verərkən batareyanın dolmasını dayandırır. Oyun oynayarkən qızmanın qarşısını almaq üçün faydalıdır.",

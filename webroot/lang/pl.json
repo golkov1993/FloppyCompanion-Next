@@ -346,7 +346,7 @@
             "htpr": "Włącza próbkowanie touch 240Hz (HTPR).",
             "gpuClkLock": "Gdy włączone, zapobiega zmianie minimalnych/maksymalnych częstotliwości GPU. Przydatne do blokowania zegarów GPU w określonym zakresie.",
             "throttlersProtection": "Gdy włączone, userspace (usługi i procesy ROM) jest blokowane od throttling CPU i GPU, więc tylko throttling na poziomie jądra się dzieje.",
-            "gpuUnlock": "Włącza overclocking GPU natychmiast. Działa tylko w trybach overclock Superfloppy (1, 2, 3). Szare jeśli Tryb Odblokowany jest wyłączony lub w trybach non-OC.",
+            "gpuUnlock": "Włącza overclocking GPU natychmiast.",
             "gpuUnlock2100": "Włącza overclocking GPU natychmiast. Na Floppy2100, overclockuje GPU do 949 MHz i może być przełączane w dowolnym czasie z natychmiastowym efektem.",
             "soundcontrol": "Dostosuj wzmocnienie słuchawek i mikrofonu w decybelach. Wyższe wartości zwiększają głośność. Użyj Podziel L/R do kontrolowania kanałów lewego i prawego niezależnie.",
             "charging": "Konfiguruj zaawansowane zachowanie ładowania.",

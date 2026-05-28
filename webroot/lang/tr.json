@@ -348,7 +348,7 @@
             "htpr": "240Hz dokunmatik örneklemeyi etkinleştirir.",
             "gpuClkLock": "Etkinleştirildiğinde, GPU min/maks frekanslarının değiştirilmesini önler. GPU saatlerini belirli bir aralığa kilitlemek için kullanışlıdır.",
             "throttlersProtection": "Etkinleştirildiğinde, kullanıcı alanının (ROM'un servisleri ve işlemleri) CPU ve GPU'yu kısıtlaması engellenir, böylece yalnızca kernel düzeyinde kısıtlama gerçekleşir.",
-            "gpuUnlock": "GPU hız aşırtmayı anında etkinleştirir. Yalnızca Superfloppy hız aşırtma modlarında (1, 2, 3) çalışır. Kilitsiz Mod devre dışıysa veya OC olmayan modlardaysa gri renkte görünür.",
+            "gpuUnlock": "GPU hız aşırtmayı anında etkinleştirir.",
             "gpuUnlock2100": "GPU hız aşırtmayı anında etkinleştirir. Floppy2100'de bu, GPU'yu 949 MHz'e hız aşırtır ve anında etkiyle herhangi bir zamanda açılıp kapatılabilir.",
             "soundcontrol": "Kulaklık ve mikrofon kazancını desibel cinsinden ayarlayın. Daha yüksek değerler sesi artırır. Sol ve sağ kanalları bağımsız kontrol etmek için Sol/Sağ Ayır'ı kullanın.",
             "charging": "Gelişmiş şarj davranışını yapılandırın.",

@@ -312,7 +312,7 @@
             "blockEd3": "Desativa o Modo de Detecção de Orelha 3, que impede que a tela reduza sua taxa de atualização quando o sensor de proximidade virtual é ativado. Também torna o sensor de proximidade menos sensível.",
             "gpuClkLock": "Quando habilitado, impede que as frequências mínimas/máximas da GPU sejam alteradas. Útil para bloquear os clocks da GPU em uma faixa específica.",
             "throttlersProtection": "Quando habilitado, o userspace (os serviços e processos da ROM) é bloqueado de throttling da CPU e GPU, para que apenas o throttling em nível de kernel aconteça.",
-            "gpuUnlock": "Habilita o overclock da GPU imediatamente. Só funciona em modos de overclock Superfloppy (1, 2, 3). Esmaecido se o Modo Desbloqueado estiver desabilitado ou em modos sem OC.",
+            "gpuUnlock": "Habilita o overclock da GPU imediatamente.",
             "gpuUnlock2100": "Habilita o overclock da GPU imediatamente. No Floppy2100, isso overclocka a GPU para 949 MHz e pode ser alternado a qualquer momento com efeito imediato.",
             "soundcontrol": "Ajusta o ganho do headphone e do microfone em decibéis. Valores mais altos aumentam o volume. Use Split L/R para controlar os canais esquerdo e direito de forma independente.",
             "charging": "Configura o comportamento avançado de carregamento.",

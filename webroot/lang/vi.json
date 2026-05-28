@@ -323,7 +323,7 @@
             "blockEd3": "Tắt Chế độ Phát hiện Tai 3, chế độ này ngăn màn hình giảm tốc độ làm mới khi cảm biến tiệm cận ảo được kích hoạt. Đồng thời làm cảm biến tiệm cận giảm độ nhạy.",
             "gpuClkLock": "Khi được bật, ngăn tần số tối thiểu/tối đa của GPU thay đổi. Hữu ích để khóa xung GPU trong một phạm vi cụ thể.",
             "throttlersProtection": "Khi được bật, không gian người dùng (các dịch vụ và tiến trình của ROM) sẽ bị chặn điều tiết CPU và GPU, do đó chỉ có việc điều tiết ở cấp độ kernel mới xảy ra.",
-            "gpuUnlock": "Bật ép xung GPU ngay lập tức. Chỉ hoạt động ở chế độ ép xung Superfloppy (1, 2, 3). Bị mờ nếu Chế độ Mở khóa bị tắt hoặc ở các chế độ không phải ép xung.",
+            "gpuUnlock": "Bật ép xung GPU ngay lập tức.",
             "gpuUnlock2100": "Bật mở khóa GPU ngay lập tức. Trên Floppy2100, cái này có thể được bật/tắt bất cứ lúc nào với hiệu lực tức thì.",
             "soundcontrol": "Điều chỉnh khuếch đại của tai nghe và míc ở decibel. Giá trị càng cao thì càng tăng âm lượng. Sử dụng Chia kênh L/R để điều khiển kênh trái và kênh phải một cách độc lập.",
             "charging": "Cấu hình hành vi sạc nâng cao.",
