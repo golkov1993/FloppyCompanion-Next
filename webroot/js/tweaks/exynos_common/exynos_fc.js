@@ -140,7 +140,7 @@ function updateExynosFcPendingIndicator() {
 }
 
 async function loadExynosFcState() {
-    if (window.KERNEL_NAME !== 'Floppy2100') {
+    if (window.KERNEL_NAME !== 'Floppy2100' && window.KERNEL_NAME !== 'Floppy1280') {
         exynosFcAvailable = false;
         renderExynosFcCard();
         return;
@@ -207,7 +207,7 @@ async function applyExynosFc() {
 }
 
 function initExynosFcTweak() {
-    if (window.KERNEL_NAME !== 'Floppy2100') {
+    if (window.KERNEL_NAME !== 'Floppy2100' && window.KERNEL_NAME !== 'Floppy1280') {
         exynosFcAvailable = false;
         renderExynosFcCard();
         return;
