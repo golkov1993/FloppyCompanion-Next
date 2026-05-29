@@ -380,6 +380,7 @@
                 '949000\t820750\t(base: 837500)',
                 '130000\t526750\t(base: 537500)'
             ].join('\n');
+            state.files['/sys/kernel/throttlers_protection'] = '0';
         }
 
         state.files['/data/adb/floppy_companion/presets/.defaults.json'] = JSON.stringify(defaultsJson, null, 2);
@@ -491,6 +492,9 @@
             if (key) {
                 if (action === 'save') state.tweakSaved.misc[key] = val;
                 else current[key] = val;
+                if (key === 'throttlers_protection') {
+                    state.files['/sys/kernel/throttlers_protection'] = val;
+                }
             }
             return;
         }
