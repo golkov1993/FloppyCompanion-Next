@@ -3257,6 +3257,28 @@ beer-css.tweak-slider-scope .tweak-beer-slider:has(> input.beer-slider-input:dis
     line-height: 1.5;
 }
 
+.modal-reboot-tweak-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 14px;
+}
+
+.modal-reboot-tweak-item {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-block-size: 32px;
+    padding: 6px 14px;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--md-sys-color-secondary-container) 70%, transparent);
+    color: var(--md-sys-color-on-secondary-container);
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.2;
+}
+
 .modal-icon {
     display: flex;
     justify-content: center;

@@ -452,6 +452,8 @@
         "throttlersProtectionOffsetsDisableTitle": "¿Restablecer los offsets térmicos a 0°C?",
         "throttlersProtectionOffsetsDisableBody": "<p>Se desactivó Protección de Throttling. Se recomienda restablecer todos los offsets térmicos a <strong>0°C</strong> porque la ROM volverá a gestionar el throttling.</p>",
         "rebootPendingBody": "<p>¿Estás seguro de que quieres {action}?</p><p><strong>¡Tienes cambios sin aplicar que se perderán!</strong></p>",
+        "tweakRebootRequiredTitle": "Reinicio recomendado",
+        "tweakRebootRequiredBody": "Es probable que uno de los siguientes ajustes solo tenga efecto después de reiniciar:",
         "processingKernel": "Procesando Kernel..."
     }
 }

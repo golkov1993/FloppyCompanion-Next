@@ -175,6 +175,7 @@ window.showConfirmModal = function (options = {}) {
             iconClass = '',
             confirmText = 'Confirm',
             cancelText = 'Cancel',
+            showCancel = true,
             extraButton = null // { text: 'Extra', value: 'extra' }
         } = options;
 
@@ -210,6 +211,7 @@ window.showConfirmModal = function (options = {}) {
         let extraBtn = document.getElementById('confirm-modal-extra');
 
         cancelBtn.textContent = cancelText;
+        cancelBtn.classList.toggle('hidden', !showCancel);
         confirmBtn.textContent = confirmText;
 
         // Handle extra button
@@ -227,6 +229,7 @@ window.showConfirmModal = function (options = {}) {
         const newConfirm = confirmBtn.cloneNode(true);
         cancelBtn.parentNode.replaceChild(newCancel, cancelBtn);
         confirmBtn.parentNode.replaceChild(newConfirm, confirmBtn);
+        newCancel.classList.toggle('hidden', !showCancel);
 
         newCancel.addEventListener('click', () => {
             confirmModal.classList.add('hidden');

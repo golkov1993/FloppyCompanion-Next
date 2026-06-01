@@ -89,7 +89,18 @@ function selectHwuiRenderer(renderer) {
     renderHwuiCard();
 }
 
-async function saveHwui() {
+function getHwuiCardTitle() {
+    const title = document.querySelector('#hwui-card .card-title')?.textContent?.trim();
+    return title || (window.t ? window.t('tweaks.hwui.title') : 'HWUI Renderer');
+}
+
+async function maybeShowHwuiRebootModal() {
+    if (typeof window.showTweakRebootRequiredModal === 'function') {
+        await window.showTweakRebootRequiredModal([getHwuiCardTitle()]);
+    }
+}
+
+async function saveHwui(options = {}) {
     const normalizedState = {
         renderer: normalizeHwuiRenderer(hwuiPendingState.renderer)
     };
@@ -104,8 +115,10 @@ async function saveHwui() {
         hwuiPendingState = { ...hwuiReferenceState };
         showToast(window.t ? window.t('toast.settingsSaved') : 'Settings saved');
         renderHwuiCard();
+        return true;
     } else {
         showToast(window.t ? window.t('toast.settingsFailed') : 'Failed to apply settings', true);
+        return false;
     }
 }
 
@@ -132,7 +145,7 @@ function initHwuiTweak() {
         });
     }
 
-    window.bindSaveApplyButtons('hwui', saveHwui, applyHwui);
+    bindHwuiButtons();
     loadHwuiState();
 
     if (typeof window.registerTweak === 'function') {
@@ -148,6 +161,33 @@ function initHwuiTweak() {
             render: renderHwuiCard,
             save: saveHwui,
             apply: applyHwui
+        });
+    }
+}
+
+function bindHwuiButtons() {
+    const btnSave = document.getElementById('hwui-btn-save');
+    const btnApply = document.getElementById('hwui-btn-apply');
+    const btnSaveApply = document.getElementById('hwui-btn-save-apply');
+
+    if (btnSave) {
+        btnSave.addEventListener('click', async () => {
+            const saved = await saveHwui();
+            if (saved) {
+                await maybeShowHwuiRebootModal();
+            }
+        });
+    }
+    if (btnApply) {
+        btnApply.addEventListener('click', () => applyHwui());
+    }
+    if (btnSaveApply) {
+        btnSaveApply.addEventListener('click', async () => {
+            const saved = await saveHwui();
+            if (saved) {
+                await applyHwui();
+                await maybeShowHwuiRebootModal();
+            }
         });
     }
 }

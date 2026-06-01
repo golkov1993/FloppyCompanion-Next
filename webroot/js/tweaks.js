@@ -174,6 +174,35 @@ async function showResetTweakModal(tweakName) {
     return null;
 }
 
+window.showTweakRebootRequiredModal = async function (tweakNames = []) {
+    const names = (Array.isArray(tweakNames) ? tweakNames : [tweakNames])
+        .map(name => String(name || '').trim())
+        .filter(Boolean);
+
+    if (names.length === 0) return false;
+
+    const title = window.t ? window.t('modal.tweakRebootRequiredTitle') : 'Reboot recommended';
+    const intro = window.t
+        ? window.t('modal.tweakRebootRequiredBody')
+        : 'One of the following tweaks will likely only take effect after rebooting:';
+    const dismiss = window.t ? window.t('tweaks.dismiss') : 'Dismiss';
+    const escapedNames = names.map(name => name
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;'));
+    const items = escapedNames.map(name => `<span class="modal-reboot-tweak-item">${name}</span>`).join('');
+
+    return showConfirmModal({
+        title,
+        body: `<p>${intro}</p><div class="modal-reboot-tweak-list">${items}</div>`,
+        iconClass: 'warning',
+        confirmText: dismiss,
+        showCancel: false
+    });
+};
+
 window.reloadTweakState = async function (tweakId) {
     const loaders = {
         hwui: window.loadHwuiState,
