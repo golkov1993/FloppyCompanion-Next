@@ -38,10 +38,7 @@
           "tooltipKey": "tweaks.tooltip.thermalControl",
           "requires": {
             "var": "kernelName",
-            "in": [
-              "Floppy1280",
-              "Floppy2100"
-            ]
+            "eq": "Floppy2100"
           }
         },
         {
@@ -72,7 +69,10 @@
           "tooltipKey": "tweaks.tooltip.exynosFc",
           "requires": {
             "var": "kernelName",
-            "eq": "Floppy2100"
+            "in": [
+              "Floppy1280",
+              "Floppy2100"
+            ]
           }
         },
         {
